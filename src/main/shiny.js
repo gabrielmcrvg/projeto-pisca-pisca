@@ -1,11 +1,12 @@
 // Alertas de shiny: lê (só lendo) as mensagens que o jogo recebe e avisa no WhatsApp e no Windows.
 //
 // O que o servidor do jogo manda e é usado aqui:
-//  • "campo": as criaturas em campo, cada uma com s (slot), n (nome), nv (nível), lt (60000 + espécie) e sh (shiny);
+//  • "campo": as criaturas em campo, cada uma com s (slot), n (nome), nv (nível), lt (60000 + espécie) e sh;
+//    o sh NÃO é confiável como "shiny" (chefes/eventos também vêm com ele), então só serve para dar nome e nível;
 //  • "batalha": eventos; k:"bola" (pokébola jogada, com shiny e sucesso) e k:"fugiu" (com shiny e nome);
 //  • "estado.dexMud": contadores da Pokédex por espécie, com sv (shinies vistos) e sc (shinies capturados).
-// Os contadores da Pokédex vêm do servidor, então servem de rede de segurança: se o aviso pelo campo
-// passar batido (HUB travado, recarregando…), a subida do sv/sc ainda gera o aviso — e nunca em dobro.
+// O aviso de "apareceu" só sai quando o contador de shinies vistos da Pokédex (sv, do servidor) sobe —
+// o mesmo número que aparece na conta. Captura: evento da pokébola com shiny e sucesso, ou subida do sc.
 const fs = require('node:fs');
 const path = require('node:path');
 const { EventEmitter } = require('node:events');
@@ -75,10 +76,10 @@ function onCampo(a, j) {
   live.set(a.id, mobs);
   for (const m of j.mobs || []) {
     if (!m || !m.sh) continue;
-    if (mobs.has(m.s)) continue;                    // o mesmo shiny continua em campo
+    if (mobs.has(m.s)) continue;                    // a mesma criatura continua em campo
     const especie = m.lt > 60000 ? m.lt - 60000 : null;
+    // só anota (nome/nível para quando o contador do jogo confirmar); não avisa sozinho
     mobs.set(m.s, { nome: m.n, nivel: m.nv, especie, em: Date.now() });
-    if (!seenRecently(a.id, 'visto', especie)) fire(a, 'visto', { nome: m.n, nivel: m.nv, especie });
   }
   // esquece shinies que saíram de campo há muito tempo
   for (const [s, m] of mobs) if (Date.now() - m.em > 30 * 60_000) mobs.delete(s);
@@ -87,7 +88,16 @@ function onCampo(a, j) {
 function onBatalha(a, j) {
   const mobs = live.get(a.id) || new Map();
   for (const e of j.ev || []) {
-    if (e.k === 'bola' && e.shiny && e.sucesso) {
+    if (e.k === 'spawn' && e.shiny === true) {
+      // criatura nova em campo marcada como shiny pelo próprio evento: guarda nome e nível para o aviso
+      mobs.set(e.slot, { nome: e.nome, nivel: e.level, especie: e.speciesId ?? null, em: Date.now() });
+      live.set(a.id, mobs);
+    } else if (e.k === 'capturado' && e.pokemon?.shiny === true) {
+      // o jogo confirma a captura com o pokémon (nome, nível, espécie)
+      const pk = e.pokemon, especie = pk.speciesId ?? null;
+      for (const m of mobs.values()) if (m.especie === especie) m.capturado = true;
+      if (!seenRecently(a.id, 'capturado', especie)) fire(a, 'capturado', { nome: pk.nome, nivel: pk.level, especie });
+    } else if (e.k === 'bola' && e.shiny && e.sucesso) {
       const m = mobs.get(e.slot);
       if (m?.capturado) continue;
       if (m) m.capturado = true;
@@ -114,11 +124,20 @@ function onDex(a, dex) {
       c[key][sp] = now;
       if (before === now) continue;
       changed = true;
-      if (before == null || now < before) continue;
-      for (let i = before; i < now; i++) if (!seenRecently(a.id, tipo, especie)) fire(a, tipo, { especie, nome: nomeDe(a.id, especie) });
+      if (now < before) continue;
+      // primeira vez que a espécie aparece nesta conta: só conta se o campo acabou de mostrar um shiny dela
+      const fresh = before == null ? (recentShiny(a.id, especie) && now > 0 ? 1 : 0) : now - before;
+      const m = recentShiny(a.id, especie);
+      for (let i = 0; i < fresh; i++) if (!seenRecently(a.id, tipo, especie)) fire(a, tipo, { especie, nome: m?.nome || nomeDe(a.id, especie), nivel: m?.nivel });
     }
   }
   if (changed) persist();
+}
+
+// Criatura com sh dessa espécie vista em campo nos últimos minutos (para dar nome e nível ao aviso).
+function recentShiny(id, especie) {
+  for (const m of (live.get(id) || new Map()).values()) if (m.especie === especie && Date.now() - m.em < WINDOW) return m;
+  return null;
 }
 
 // Nome da espécie: do que está em campo ou, se não tiver, dos dados da Pokédex do app.
