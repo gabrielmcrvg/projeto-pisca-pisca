@@ -3,8 +3,12 @@ const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const { TYPE_KEYS, TYPE_NAMES, defaultType, label, save } = require('./config');
 const accounts = require('./accounts');
 const extWindow = require('./windows/extensions');
+const waWindow = require('./windows/whatsapp');
+const alertsWindow = require('./windows/alerts');
 const extensions = require('./extensions/catalog');
 const ui = require('./main-window');
+const recorder = require('./recorder');
+const gameupdate = require('./gameupdate');
 
 // Menu do botão de ajuda no topo: atalhos, pastas do app e versão.
 const SHORTCUTS = 'Ctrl+1…4 — ampliar/restaurar a conta (ou trazer a janela destacada)\nCtrl+0 — voltar para todas\n' +
@@ -17,8 +21,15 @@ function appMenu(sender) {
     { label: 'Atalhos de teclado', click: () => dialog.showMessageBox(owner, { type: 'info', title: 'Atalhos', message: 'Atalhos do CorollaHUB', detail: SHORTCUTS, noLink: true }) },
     { type: 'separator' },
     { label: 'Gerenciar extensões…', click: extWindow.openExtensions },
+    { label: 'Alertas…', click: alertsWindow.openAlerts },
+    { label: 'WhatsApp do bot…', click: waWindow.openWhatsApp },
+    { label: 'Atualizar o jogo sozinho', type: 'checkbox', checked: gameupdate.enabled(), click: item => gameupdate.setEnabled(item.checked) },
     { label: 'Abrir pasta de extensões', click: () => shell.openPath(extensions.ensureExtDir()) },
     { label: 'Abrir pasta de dados', click: () => shell.openPath(app.getPath('userData')) },
+    { type: 'separator' },
+    { label: 'Gravar mensagens do jogo', type: 'checkbox', checked: recorder.isRecording(),
+      click: () => (recorder.isRecording() ? recorder.stop() : recorder.start()) },
+    { label: 'Abrir pasta de gravações', click: () => { require('node:fs').mkdirSync(recorder.folder(), { recursive: true }); shell.openPath(recorder.folder()); } },
     { type: 'separator' },
     { label: 'Sobre o CorollaHUB', click: () => dialog.showMessageBox(owner, { type: 'info', title: 'Sobre', message: `CorollaHUB ${app.getVersion()}`,
       detail: `Várias contas em uma janela.\nElectron ${process.versions.electron} • Chromium ${process.versions.chrome}\n\nDados e imagens da Pokédex: PokéAPI.`, noLink: true }) },

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"><title>CorollaHUB • WhatsApp do bot</title><link rel="stylesheet" href="../shared/theme.css"><link rel="stylesheet" href="../extensions/extensions.css"><link rel="stylesheet" href="whatsapp.css"></head>
+<body class="xm"><svg class="sprite" aria-hidden="true"><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H11l-4.5 3.5V16.5h0a2 2 0 0 1-2-2z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></symbol><symbol id="i-qr" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12H20M17 12v3M20 12v2"/></symbol><symbol id="i-reload" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.5H15"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-7-6 15-2.5-6z"/><path d="M11.5 14L20 5"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol></svg>
+<header class="xm-top">
+  <div class="leds" aria-hidden="true"><span class="lens"></span><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+  <div class="xm-title"><h1><svg class="ic"><use href="#i-chat"/></svg>WhatsApp do bot</h1><small>O HUB entra no número do bot como aparelho conectado</small></div>
+</header>
+<main class="xm-body">
+  <section class="card" aria-label="Conexão">
+    <div class="wa-head"><h2>Conexão</h2><span class="wa-status" id="status"><i></i><span id="status-text">Desconectado</span></span></div>
+
+    <div data-view="off">
+      <p>Use o número novo do bot, não o seu. No celular do bot: <b>WhatsApp → Aparelhos conectados → Conectar um aparelho</b>.</p>
+      <div class="row"><button class="btn primary" id="qr-btn"><svg class="ic"><use href="#i-qr"/></svg><span>Conectar com QR code</span></button></div>
+      <p class="or">ou, se o celular do bot estiver longe, com código de 8 letras:</p>
+      <form class="store-row" id="code-form"><input id="phone" placeholder="Número do bot, ex.: 55 11 91234-5678" inputmode="tel" autocomplete="off" spellcheck="false"><button class="btn"><svg class="ic"><use href="#i-key"/></svg><span>Gerar código</span></button></form>
+    </div>
+
+    <div data-view="connecting" hidden><p class="wa-wait">Conectando ao WhatsApp…</p><button class="btn" data-cancel><svg class="ic"><use href="#i-close"/></svg><span>Cancelar</span></button></div>
+
+    <div data-view="qr" hidden>
+      <div class="wa-pair"><img id="qr" alt="QR code para conectar"><ol><li>Abra o WhatsApp no celular <b>do bot</b>.</li><li>Toque em <b>Aparelhos conectados → Conectar um aparelho</b>.</li><li>Aponte a câmera para este código.</li></ol></div>
+      <button class="btn" data-cancel><svg class="ic"><use href="#i-close"/></svg><span>Cancelar</span></button>
+    </div>
+
+    <div data-view="code" hidden>
+      <div class="wa-pair"><b class="wa-code" id="code">----</b><ol><li>No celular do bot: <b>Aparelhos conectados → Conectar um aparelho</b>.</li><li>Toque em <b>Conectar com número de telefone</b>.</li><li>Digite este código. Ele vence em poucos minutos.</li></ol></div>
+      <button class="btn" data-cancel><svg class="ic"><use href="#i-close"/></svg><span>Cancelar</span></button>
+    </div>
+
+    <div data-view="online" hidden>
+      <p>Conectado no número <b id="me">—</b>. Os alertas saem por ele.</p>
+      <button class="btn mini danger" id="logout"><svg class="ic"><use href="#i-close"/></svg><span>Desconectar este HUB</span></button>
+    </div>
+
+    <p class="wa-error" id="error" hidden></p>
+  </section>
+
+  <section class="card" id="group-card" aria-label="Grupo dos alertas" hidden>
+    <div class="wa-head"><h2>Grupo dos alertas</h2><button class="linkbtn" id="refresh"><svg class="ic"><use href="#i-reload"/></svg><span>Atualizar lista</span></button></div>
+    <p>Crie no WhatsApp um grupo com o número do bot e as pessoas que vão receber os alertas, depois escolha ele aqui.</p>
+    <div class="row"><select id="group"></select><button class="btn primary" id="test"><svg class="ic"><use href="#i-send"/></svg><span>Mandar teste</span></button></div>
+    <p class="wa-feedback" id="wa-msg" hidden></p>
+  </section>
+  <section class="card"><h2>O que avisar</h2><p>Shiny, estoque, pokémon bom e atualização do jogo ficam na janela <b>Alertas</b> (botão no topo do HUB).</p><button class="btn" id="open-alerts">Abrir Alertas</button></section>
+</main>
+<script src="whatsapp.js"></script></body></html>

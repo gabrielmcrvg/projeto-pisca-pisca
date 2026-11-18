@@ -14,14 +14,22 @@ src/
 │   ├── accounts.js            Contas: sessão e página de cada uma, destacar, renomear, esquecer login
 │   ├── layout.js              Cálculo da grade/colunas/linhas (puro, testado)
 │   ├── monitor.js             Saúde de uma conta: quedas, travamentos, recarga (puro, testado)
+│   ├── recorder.js            Grava as mensagens que o jogo recebe (opcional, para os alertas)
+│   ├── whatsapp.js            Bot de alertas: conexão (Baileys), grupo escolhido, fila de envio
+│   ├── alerts.js              Central de alertas: onde avisar, estoque (Ultra Ball, potes, revives), pokémon com nota alta
+│   ├── commands.js            Comandos no grupo (/estoque, /shinies…)
+│   ├── shiny.js               Detecta shiny visto/capturado/fugiu nas mensagens do jogo; contadores
+│   ├── gameupdate.js          Versão nova do jogo (/saude) → recarrega as contas sozinho
 │   ├── health.js              Liga o monitor às contas: avisos, notificações, internet
 │   ├── shortcuts.js           Atalhos de teclado
 │   ├── menus.js               Menus nativos (ajuda e nome da conta)
 │   ├── ipc.js                 Comandos vindos das páginas (com verificação de remetente)
 │   ├── windows/
-│   │   ├── chat.js            Janelinha do ChatGPT
+│   │   ├── chat.js            Botão do ChatGPT (abre no navegador)
 │   │   ├── pokedex.js         Telinha da Pokédex
-│   │   └── extensions.js      Gerenciador de extensões
+│   │   ├── extensions.js      Gerenciador de extensões
+│   │   ├── whatsapp.js        Janela "WhatsApp do bot" (conectar e escolher o grupo)
+│   │   └── alerts.js          Janela "Alertas"
 │   └── extensions/
 │       ├── catalog.js         Extensões instaladas e carregamento em cada conta
 │       └── files.js           Manifesto, .crx/.zip e busca nos navegadores do PC
@@ -30,8 +38,9 @@ src/
 │   ├── shared/theme.css       Tema: cores, botões, indicadores, emblemas
 │   ├── hub/                   Janela principal
 │   ├── pokedex/               Pokédex (data.js = dados gerados do PokéAPI)
-│   ├── chat/                  Barra da janelinha do ChatGPT
-│   └── extensions/            Gerenciador de extensões
+│   ├── extensions/            Gerenciador de extensões
+│   ├── whatsapp/              Conectar o bot e escolher o grupo
+│   └── alerts/                O que avisar, estoque das contas, últimos alertas
 └── shared/types.js            Os 18 tipos (usado pelo main e pelas páginas)
 ```
 

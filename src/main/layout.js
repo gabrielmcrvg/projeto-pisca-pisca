@@ -2,6 +2,7 @@
 
 
 const TOP = 68, GAP = 10, HEADER = 44, MAX = 4;
+const DETACHED_TOP = 40;   // barra compacta no topo das janelas destacadas
 
 // Quantas colunas e linhas usar para `n` telas em cada modo.
 function grid(n, mode) {
@@ -30,4 +31,4 @@ function layout(width, height, mode, count = 4, focus = -1) {
     return { x: x1, y: y1, width: Math.max(1, x2 - x1), height: Math.max(HEADER + 1, y2 - y1) };
   });
 }
-module.exports = { layout, grid, TOP, GAP, HEADER, MAX };
+module.exports = { layout, grid, TOP, GAP, HEADER, MAX, DETACHED_TOP };

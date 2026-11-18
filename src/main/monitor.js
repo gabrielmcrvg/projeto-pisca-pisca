@@ -34,6 +34,7 @@ class AccountMonitor extends EventEmitter {
     this.attempts = 0;
     this.paused = false;
     this.sockets = new Set();
+    this.http = new Map();       // respostas de fetch/XHR esperando terminar (só durante gravação)
     this.seenSocket = false;
     this.failedThisLoad = false;
     this.timers = {};
@@ -82,11 +83,20 @@ class AccountMonitor extends EventEmitter {
           dbg.on('message', (_e, method, params) => this.onProtocol(method, params));
         }
       }
-      dbg.sendCommand('Network.enable', { maxTotalBufferSize: 1_000_000, maxResourceBufferSize: 100_000 }).catch(() => {});
+      dbg.sendCommand('Network.enable', { maxTotalBufferSize: 5_000_000, maxResourceBufferSize: 500_000 }).catch(() => {});
     } catch { /* DevTools aberto ou página fechando: segue sem o sinal do socket */ }
   }
 
   pageHost() { try { return new URL(this.wc.getURL()).host; } catch { return ''; } }
+
+  // Mesmo site do jogo (inclui subdomínios, ex.: api.pokeidle.io)?
+  sameSite(url) {
+    try {
+      const base = new URL(this.wc.getURL()).hostname.split('.').slice(-2).join('.');
+      const host = new URL(url).hostname;
+      return Boolean(base) && (host === base || host.endsWith('.' + base));
+    } catch { return false; }
+  }
 
   onProtocol(method, params) {
     if (method === 'Network.webSocketCreated') {
@@ -98,6 +108,23 @@ class AccountMonitor extends EventEmitter {
       this.clear('socket');
       this.clear('awaitSocket');
       if (['disconnected', 'login'].includes(this.problem?.kind)) this.resolve();
+      this.emit('frame', { kind: 'open', socket: params.requestId, url: String(params.url).split('?')[0] });
+    } else if (method === 'Network.webSocketFrameReceived') {
+      if (this.sockets.has(params.requestId)) this.lastFrame = Date.now();   // última mensagem do jogo (para o /status)
+      if (this.sockets.has(params.requestId)) this.emit('frame', { kind: 'in', socket: params.requestId, opcode: params.response?.opcode, data: params.response?.payloadData });
+    } else if (method === 'Network.responseReceived') {
+      // respostas de fetch/XHR do próprio site (só são lidas se alguém estiver gravando)
+      if (!['XHR', 'Fetch'].includes(params.type) || !this.sameSite(params.response?.url) || !this.listenerCount('frame')) return;
+      if (this.http.size > 200) this.http.clear();
+      this.http.set(params.requestId, { url: params.response.url, status: params.response.status, mime: params.response.mimeType });
+    } else if (method === 'Network.loadingFailed') {
+      this.http.delete(params.requestId);
+    } else if (method === 'Network.loadingFinished') {
+      const r = this.http.get(params.requestId);
+      if (!r) return;
+      this.http.delete(params.requestId);
+      const body = () => this.wc.debugger.sendCommand('Network.getResponseBody', { requestId: params.requestId });
+      this.emit('frame', { kind: 'http', ...r, size: params.encodedDataLength, body });
     } else if (method === 'Network.webSocketClosed') {
       if (!this.sockets.delete(params.requestId) || this.sockets.size) return;
       this.later('socket', GRACE_SOCKET, () => { if (!this.sockets.size) this.raise('disconnected'); });

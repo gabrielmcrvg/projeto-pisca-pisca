@@ -44,4 +44,20 @@ function onScreen(b) {
     b.x < r.x + r.width - 60 && b.x + b.width > r.x + 60 && b.y >= r.y - 10 && b.y < r.y + r.height - 60);
 }
 
-module.exports = { ctx, paths, START_URL, APP_ID, BG, FRAME, MODES, secured, alive, onScreen };
+// Janela "dona" válida para as telinhas (Pokédex, ChatGPT): a principal ou uma conta destacada.
+const ownerWindow = w => (alive(w) && (w === ctx.win || [...ctx.detached.values()].includes(w)) ? w : ctx.win);
+
+// O retângulo está no mesmo monitor que a janela?
+const sameDisplay = (rect, w) => Boolean(rect) && alive(w) &&
+  screen.getDisplayMatching(rect).id === screen.getDisplayMatching(w.getBounds()).id;
+
+// Ajusta o retângulo para caber inteiro na área útil do monitor onde ele está.
+function fitOnDisplay(r) {
+  const wa = screen.getDisplayMatching(r).workArea;
+  const width = Math.min(r.width, wa.width), height = Math.min(r.height, wa.height);
+  return { width, height,
+    x: Math.round(Math.min(Math.max(r.x, wa.x), wa.x + wa.width - width)),
+    y: Math.round(Math.min(Math.max(r.y, wa.y), wa.y + wa.height - height)) };
+}
+
+module.exports = { ctx, paths, START_URL, APP_ID, BG, FRAME, MODES, secured, alive, onScreen, ownerWindow, sameDisplay, fitOnDisplay };

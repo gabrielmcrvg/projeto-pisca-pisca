@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"><title>CorollaHUB • Alertas</title><link rel="stylesheet" href="../shared/theme.css"><link rel="stylesheet" href="../extensions/extensions.css"><link rel="stylesheet" href="../whatsapp/whatsapp.css"><link rel="stylesheet" href="alerts.css"></head>
+<body class="xm"><svg class="sprite" aria-hidden="true"><symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H11l-4.5 3.5V16.5h0a2 2 0 0 1-2-2z"/></symbol></svg>
+<header class="xm-top">
+  <div class="leds" aria-hidden="true"><span class="lens"></span><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+  <div class="xm-title"><h1><svg class="ic"><use href="#i-bell"/></svg>Alertas</h1><small>Shinies, estoque, pokémon bom e atualização do jogo</small></div>
+</header>
+<main class="xm-body">
+  <section class="card">
+    <h2>Onde avisar</h2>
+    <div class="wa-opts">
+      <label><input type="checkbox" data-flag="whatsapp"> Grupo do WhatsApp</label>
+      <label><input type="checkbox" data-flag="windows"> Notificação do Windows</label>
+      <label><input type="checkbox" data-flag="comandos"> Responder comandos no grupo</label>
+    </div>
+    <p class="al-hint">Comandos: <b>/estoque</b>, <b>/ultra</b>, <b>/potes</b>, <b>/revives</b>, <b>/shinies</b>, <b>/status</b> e <b>/ajuda</b>. Cada HUB conectado responde com as contas dele.</p>
+    <p class="al-wa" id="wa-status"></p>
+  </section>
+
+  <section class="card">
+    <h2>Quem marcar no grupo</h2>
+    <p>Os alertas de cada conta marcam a pessoa escolhida (ela recebe a notificação de menção). No HUB de um amigo, ele escolhe ele mesmo para as contas dele.</p>
+    <div id="tags" class="al-rows"></div>
+  </section>
+
+  <section class="card">
+    <h2>Estoque</h2>
+    <p>Avisa uma vez quando uma conta fica abaixo do limite e de novo só depois de repor. Potes e revives são somados: tanto faz o tipo que cada um compra.</p>
+    <div class="al-rows">
+      <label class="al-row"><input type="checkbox" data-group="ultra"> <span>Ultra Ball</span> <small>abaixo de</small> <input type="number" min="0" step="1" data-min="ultra"></label>
+      <label class="al-row"><input type="checkbox" data-group="potes"> <span>Potes (todos os tipos)</span> <small>abaixo de</small> <input type="number" min="0" step="1" data-min="potes"></label>
+      <label class="al-row"><input type="checkbox" data-group="revives"> <span>Revives (todos os tipos)</span> <small>abaixo de</small> <input type="number" min="0" step="1" data-min="revives"></label>
+    </div>
+    <table class="wa-table"><thead><tr><th>Conta</th><th>Ultra Ball</th><th>Potes</th><th>Revives</th></tr></thead><tbody id="stock"></tbody></table>
+    <details class="al-items"><summary>Quais itens contam como pote e revive</summary>
+      <p>O jogo só manda o número de cada item. Os potes entram sozinhos quando curam um pokémon na batalha; o revive você marca aqui (confira na mochila pela quantidade).</p>
+      <div id="items"></div>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>Pokémon bom</h2>
+    <label class="al-row"><input type="checkbox" data-group="nota"> <span>Capturou pokémon com nota</span> <small>a partir de</small> <input type="number" min="0" max="10" step="0.1" data-min="nota"> <small>/ 10</small></label>
+  </section>
+
+  <section class="card">
+    <h2>Shiny</h2>
+    <div class="wa-opts">
+      <label><input type="checkbox" data-flag="shinyVisto"> Apareceu</label>
+      <label><input type="checkbox" data-flag="shinyCaptura"> Capturado</label>
+      <label><input type="checkbox" data-flag="shinyFuga"> Fugiu</label>
+    </div>
+    <p class="al-hint">Os números contam o que o HUB viu. Para incluir shinies de antes, é só digitar o valor certo na tabela.</p>
+    <table class="wa-table"><thead><tr><th>Conta</th><th>Vistos</th><th>Capturados</th></tr></thead><tbody id="shinies"></tbody>
+      <tfoot><tr><th>Total</th><th id="tot-v">0</th><th id="tot-c">0</th></tr></tfoot></table>
+  </section>
+
+  <section class="card">
+    <h2>Atualização do jogo</h2>
+    <div class="wa-opts">
+      <label><input type="checkbox" data-flag="atualizacao"> Avisar quando sair versão nova</label>
+      <label><input type="checkbox" id="autoupdate"> Recarregar as contas sozinho</label>
+    </div>
+    <p class="al-hint">Com mais de um HUB conectado ao bot, deixe o aviso ligado em só um deles para o grupo não receber repetido.</p>
+  </section>
+
+  <section class="card">
+    <h2>Últimos alertas</h2>
+    <div id="log" class="al-log"></div>
+  </section>
+</main>
+<script src="alerts.js"></script></body></html>

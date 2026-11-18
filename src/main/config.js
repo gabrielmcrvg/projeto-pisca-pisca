@@ -1,4 +1,4 @@
-// Preferências do app (preferences.json na pasta de dados): contas, disposição, chat e Pokédex.
+// Preferências do app (preferences.json na pasta de dados): contas, disposição, Pokédex e WhatsApp.
 const path = require('node:path');
 const fs = require('node:fs');
 const { app } = require('electron');
@@ -17,14 +17,14 @@ function save() {
   clearTimeout(saveTimer);
   const { config } = ctx;
   const accounts = config.accounts.map(({ loading, error, ...a }) => a);
-  fs.writeFileSync(configPath(), JSON.stringify({ mode: config.mode, autoReload: config.autoReload, chat: config.chat, pokedex: config.pokedex, accounts }, null, 2));
+  fs.writeFileSync(configPath(), JSON.stringify({ mode: config.mode, autoReload: config.autoReload, autoUpdateGame: config.autoUpdateGame, pokedex: config.pokedex, whatsapp: config.whatsapp, alertas: config.alertas, accounts }, null, 2));
 }
 function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 400); }
 
 const fresh = id => ({ id, name: '', type: defaultType(id), url: START_URL, zoom: 0.8, muted: id !== 1, detached: null, loading: false, error: '' });
 
 function loadConfig() {
-  const fallback = { mode: 'grid', autoReload: true, chat: {}, pokedex: {}, accounts: [1, 2, 3, 4].map(fresh) };
+  const fallback = { mode: 'grid', autoReload: true, autoUpdateGame: true, pokedex: {}, whatsapp: {}, alertas: {}, accounts: [1, 2, 3, 4].map(fresh) };
   try {
     const saved = JSON.parse(fs.readFileSync(configPath(), 'utf8'));
     const seen = new Set(), accounts = [];
@@ -38,8 +38,8 @@ function loadConfig() {
     });
     if (!accounts.length) throw Error();
     const obj = v => (v && typeof v === 'object' ? v : {});
-    return { mode: MODES.includes(saved.mode) ? saved.mode : 'grid', autoReload: saved.autoReload !== false,
-      chat: obj(saved.chat), pokedex: obj(saved.pokedex), accounts };
+    return { mode: MODES.includes(saved.mode) ? saved.mode : 'grid', autoReload: saved.autoReload !== false, autoUpdateGame: saved.autoUpdateGame !== false,
+      pokedex: obj(saved.pokedex), whatsapp: obj(saved.whatsapp), alertas: obj(saved.alertas), accounts };
   } catch { return fallback; }
 }
 

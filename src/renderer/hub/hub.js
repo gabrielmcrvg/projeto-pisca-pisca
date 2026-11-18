@@ -133,6 +133,7 @@ document.querySelector('#pokedex').addEventListener('click', () => send('pokedex
 document.querySelector('#chatgpt').addEventListener('click', () => send('chat'));
 document.querySelector('#help').addEventListener('click', () => send('app-menu'));
 document.querySelector('#extensions').addEventListener('click', () => send('extensions'));
+document.querySelector('#alerts').addEventListener('click', () => send('alerts'));
 document.querySelector('#auto-reload').addEventListener('click', () => send('auto-reload'));
 document.querySelector('#more').addEventListener('click', () => send('count', total + 1));
 document.querySelector('#fewer').addEventListener('click', () => send('count', total - 1));
@@ -152,13 +153,6 @@ function chip(a) {
   return button;
 }
 
-// Indicadores: verde = tudo certo, amarelo = carregando, vermelho = alguma conta com problema.
-function leds(accounts, alerts, online) {
-  const loading = accounts.some(a => a.loading), error = alerts > 0 || online === false;
-  document.body.classList.toggle('is-loading', loading);
-  document.body.classList.toggle('is-error', error);
-  document.body.classList.toggle('is-ok', !loading && !error);
-}
 
 // ---------- Contagem regressiva da recarga ----------
 const retries = new Map();   // painel -> horário da próxima tentativa
@@ -193,7 +187,26 @@ function showAlert(panel, alert) {
   }
 }
 
+// Botões e indicadores do topo: iguais na janela principal e na barra compacta das destacadas.
+function toolbar(state) {
+  for (const [sel, on, title] of [['#pokedex', state.pokedexOpen, state.pokedexOpen ? 'Fechar a Pokédex (Ctrl+P)' : 'Abrir a Pokédex (Ctrl+P)']]) {
+    const b = document.querySelector(sel);
+    b.classList.toggle('active', Boolean(on));
+    b.setAttribute('aria-pressed', Boolean(on));
+    b.title = title;
+  }
+  const auto = document.querySelector('#auto-reload');
+  auto.classList.toggle('active', Boolean(state.autoReload));
+  auto.setAttribute('aria-pressed', Boolean(state.autoReload));
+  const loading = state.loadingAny ?? state.panels.some(a => a.loading);
+  const error = state.alerts > 0 || state.online === false;
+  document.body.classList.toggle('is-loading', loading);
+  document.body.classList.toggle('is-error', error);
+  document.body.classList.toggle('is-ok', !loading && !error);
+}
+
 window.quadra.onState(state => {
+  toolbar(state);
   if (!state.detachedWindow) {
     total = state.total;
     document.querySelectorAll('[data-layout]').forEach(button => {
@@ -201,23 +214,12 @@ window.quadra.onState(state => {
       button.classList.toggle('active', on);
       button.setAttribute('aria-pressed', on);
     });
-    for (const [sel, on, title] of [['#pokedex', state.pokedexOpen, state.pokedexOpen ? 'Fechar a Pokédex (Ctrl+P)' : 'Abrir a Pokédex (Ctrl+P)'],
-      ['#chatgpt', state.chatOpen, state.chatOpen ? 'Recolher o ChatGPT (Ctrl+G)' : state.chatCollapsed ? 'Abrir o ChatGPT (Ctrl+G)' : 'Abrir o ChatGPT em janelinha flutuante (Ctrl+G)']]) {
-      const b = document.querySelector(sel);
-      b.classList.toggle('active', Boolean(on));
-      b.setAttribute('aria-pressed', Boolean(on));
-      b.title = title;
-    }
-    const auto = document.querySelector('#auto-reload');
-    auto.classList.toggle('active', state.autoReload);
-    auto.setAttribute('aria-pressed', state.autoReload);
     document.querySelector('#total').textContent = state.total;
     document.querySelector('#fewer').disabled = state.total <= 1;
     document.querySelector('#more').disabled = state.total >= state.max;
     const list = document.querySelector('#detached-list');
     const key = state.detached.map(a => `${a.id}:${a.label}:${a.type}`).join();
     if (list.dataset.key !== key) { list.dataset.key = key; list.replaceChildren(...state.detached.map(chip)); }
-    leds(state.panels, state.alerts, state.online);
     const feedback = document.querySelector('#feedback'), ext = state.extensions || [], bad = state.extensionErrors || [];
     const notice = state.online === false ? 'Sem internet — as contas recarregam quando a conexão voltar'
       : bad.length ? `Extensão com erro — ${bad[0]}` : ext.length ? `Extensão ativa: ${ext.join(', ')}` : '';

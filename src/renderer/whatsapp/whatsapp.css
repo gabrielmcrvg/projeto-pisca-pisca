@@ -1,0 +1,28 @@
+/* Janela "WhatsApp do bot" — reaproveita o visual da janela de Extensões */
+.wa-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.wa-head h2{margin:0}
+.wa-status{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#AEB6C2}
+.wa-status i{width:9px;height:9px;border-radius:50%;background:#5B6472;box-shadow:0 0 0 2px #12151B}
+.wa-status.online i{background:var(--green);box-shadow:0 0 0 2px #12151B,0 0 8px var(--green)}
+.wa-status.wait i{background:var(--yellow);animation:wa-blink 1s steps(2) infinite}
+.wa-status.error i{background:var(--red-hi)}
+@keyframes wa-blink{50%{opacity:.25}}
+.or{margin:14px 0 8px !important;font-size:12.5px !important;color:#8C95A3 !important}
+.wa-pair{display:flex;align-items:center;gap:18px;margin:6px 0 14px;flex-wrap:wrap}
+.wa-pair img{width:220px;height:220px;border-radius:10px;background:#fff;padding:8px;image-rendering:pixelated}
+.wa-pair ol{flex:1;min-width:200px;margin:0;padding-left:18px;color:#B9BFC9;font-size:13px;line-height:1.7}
+.wa-code{font-size:34px;letter-spacing:4px;color:#BDF4FA;font-variant-numeric:tabular-nums;background:#0E1B1F;border:1px solid var(--ink);border-radius:10px;padding:10px 18px;user-select:all}
+.wa-wait{color:#B9BFC9}
+.wa-error{margin:12px 0 0 !important;padding:8px 10px;border-radius:8px;background:#2A1D12;color:#FFE2A8 !important;box-shadow:inset 3px 0 0 var(--yellow)}
+.wa-feedback{margin:10px 0 0 !important}
+.wa-feedback.ok{color:#CFF5D4 !important}.wa-feedback.bad{color:#FFE2A8 !important}
+#group{flex:1;min-width:0;height:32px;padding:0 8px;border-radius:7px;background:#0E1B1F;border:1px solid var(--ink);color:#BDF4FA;font-family:inherit;font-size:13px}
+.wa-opts{display:flex;gap:16px;flex-wrap:wrap;margin:4px 0 12px;font-size:13px;color:#D5DAE1}
+.wa-opts label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.wa-opts input{accent-color:var(--red-hi);width:15px;height:15px}
+.wa-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.wa-table th,.wa-table td{padding:6px 8px;text-align:left;border-bottom:1px solid #262D38}
+.wa-table thead th{color:#8C95A3;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+.wa-table td:not(:first-child),.wa-table th:not(:first-child){text-align:right}
+.wa-table tfoot th{color:var(--text);border-bottom:0}
+#last{margin-top:10px;font-size:12px;color:#8C95A3;line-height:1.6}

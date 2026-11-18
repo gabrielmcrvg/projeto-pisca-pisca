@@ -7,6 +7,8 @@ const accounts = require('./accounts');
 const chat = require('./windows/chat');
 const dex = require('./windows/pokedex');
 const extWindow = require('./windows/extensions');
+const waWindow = require('./windows/whatsapp');
+const alertsWindow = require('./windows/alerts');
 const menus = require('./menus');
 const ui = require('./main-window');
 
@@ -14,7 +16,7 @@ function isTrusted(event) {
   const sender = event.sender;
   if (event.senderFrame !== sender.mainFrame) return false;
   if (alive(ctx.win) && sender === ctx.win.webContents) return true;
-  if (chat.owns(sender) || extWindow.owns(sender) || dex.owns(sender)) return true;
+  if (extWindow.owns(sender) || dex.owns(sender) || waWindow.owns(sender) || alertsWindow.owns(sender)) return true;
   return [...ctx.detached.values()].some(dw => alive(dw) && dw.webContents === sender);
 }
 
@@ -22,15 +24,17 @@ ipcMain.handle('command', async (event, cmd, value) => {
   if (!isTrusted(event)) return { error: 'Acesso negado' };
   try {
     if (extWindow.owns(event.sender)) return await extWindow.extCommand(cmd, value, BrowserWindow.fromWebContents(event.sender));
+    if (waWindow.owns(event.sender)) return await waWindow.waCommand(cmd, value);
+    if (alertsWindow.owns(event.sender)) return alertsWindow.command(cmd, value);
     if (dex.owns(event.sender)) { if (cmd === 'pokedex-hide') dex.hidePokedex(); return; }
-    if (chat.owns(event.sender)) { if (cmd === 'ready') chat.chatState(); else chat.chatCommand(cmd); return; }
     if (cmd === 'ready') { ui.arrange(); return; }
-    if (cmd === 'chat') { chat.toggleChat(); return; }
+    if (cmd === 'chat') { chat.openChat(); return; }
     if (cmd === 'layout' && MODES.includes(value)) { ctx.config.mode = value; ctx.focus = null; ui.arrange(); save(); return; }
     if (cmd === 'reload-all') { accounts.reloadAll(); return; }
-    if (cmd === 'pokedex') { dex.togglePokedex(); return; }
+    if (cmd === 'pokedex') { dex.togglePokedex(BrowserWindow.fromWebContents(event.sender)); return; }
     if (cmd === 'app-menu') { menus.appMenu(event.sender); return; }
     if (cmd === 'extensions') { extWindow.openExtensions(); return; }
+    if (cmd === 'alerts') { alertsWindow.openAlerts(); return; }
     if (cmd === 'auto-reload') { ctx.config.autoReload = !ctx.config.autoReload; for (const m of ctx.monitors.values()) m.setAuto(ctx.config.autoReload); save(); ui.state(); return; }
     if (cmd === 'drag-start' || cmd === 'drag-end') { ctx.dragging = cmd === 'drag-start'; ui.arrange(); return; }
     if (cmd === 'count') {

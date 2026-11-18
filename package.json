@@ -1,7 +1,7 @@
 {
   "name": "corollahub",
   "productName": "CorollaHUB",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Várias contas do PokeIdle em uma janela",
   "author": "Gabriel",
   "main": "src/main/index.js",
@@ -36,10 +36,17 @@
       "artifactName": "CorollaHUB-${version}-${arch}.${ext}"
     },
     "nsis": {
-      "oneClick": true,
+      "oneClick": false,
       "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerLanguages": [
+        "pt_BR"
+      ],
+      "language": "1046",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
+      "runAfterFinish": true,
       "shortcutName": "CorollaHUB",
       "uninstallDisplayName": "CorollaHUB",
       "deleteAppDataOnUninstall": false,
@@ -49,5 +56,9 @@
       "artifactName": "CorollaHUB-${version}-portatil.${ext}"
     },
     "publish": []
+  },
+  "dependencies": {
+    "baileys": "^7.0.0-rc14",
+    "qrcode": "^1.5.4"
   }
 }

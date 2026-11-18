@@ -18,7 +18,7 @@ function openExtensions() {
   extWin = new BrowserWindow({ width: 820, height: 720, minWidth: 600, minHeight: 480, parent: ctx.win, backgroundColor: BG, icon,
     title: 'CorollaHUB • Extensões', autoHideMenuBar: true, webPreferences: { ...secured, preload } });
   extWin.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
-  extWin.webContents.on('will-accounts.navigate', event => event.preventDefault());
+  extWin.webContents.on('will-navigate', event => event.preventDefault());
   extWin.on('page-title-updated', event => event.preventDefault());
   extWin.on('closed', () => { extWin = null; });
   extWin.loadFile(paths.page('extensions'));

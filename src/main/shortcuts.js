@@ -20,8 +20,10 @@ function shortcut(input, sourceId) {
     else { ctx.focus = ctx.focus === a.id ? null : a.id; ui.arrange(); accounts.reveal(a.id); }
     return true;
   }
-  if (ctrl && plain && (input.key || '').toLowerCase() === 'p') { if (!input.isAutoRepeat) dex.togglePokedex(); return true; }
-  if (ctrl && plain && (input.key || '').toLowerCase() === 'g') { if (!input.isAutoRepeat) chat.toggleChat(); return true; }
+  // Pokédex e ChatGPT abrem por cima da janela onde a tecla foi apertada (principal ou destacada)
+  const from = (sourceId !== null && ctx.detached.get(sourceId)) || ctx.win;
+  if (ctrl && plain && (input.key || '').toLowerCase() === 'p') { if (!input.isAutoRepeat) dex.togglePokedex(from); return true; }
+  if (ctrl && plain && (input.key || '').toLowerCase() === 'g') { if (!input.isAutoRepeat) chat.openChat(); return true; }
   if (ctrl && plain && (input.key || '').toLowerCase() === 'm') { if (!input.isAutoRepeat && target) accounts.toggleMute(target); return true; }
   if (input.key === 'F5' && !input.alt) {
     if (!input.isAutoRepeat) { if (ctrl) accounts.reloadAll(); else if (target) accounts.reloadAccount(target); ui.state(); }

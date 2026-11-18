@@ -8,6 +8,7 @@ const extensions = require('./extensions/catalog');
 const health = require('./health');
 const keys = require('./shortcuts');
 const ui = require('./main-window');
+const dex = require('./windows/pokedex');
 
 function safeURL(value) {
   let text = String(value || '').trim();
@@ -177,6 +178,8 @@ function detach(id, at) {
   dw.on('focus', () => dw.flashFrame(false));
   // Fechar a janela destacada devolve a conta para a janela principal (a página continua aberta).
   dw.on('close', () => {
+    // a Pokédex que estava por cima desta janela volta para a principal
+    dex.adopt(dw);
     ctx.detached.delete(id);
     try { dw.contentView.removeChildView(view); } catch {}
     if (ctx.quitting) return;

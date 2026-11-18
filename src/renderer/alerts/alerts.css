@@ -1,0 +1,22 @@
+/* Janela "Alertas" — usa o visual das janelas de Extensões e WhatsApp */
+.al-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.al-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#D5DAE1;cursor:pointer}
+.al-row > span{min-width:170px}
+.al-row small{color:#8C95A3;font-size:12px}
+.al-row input[type=checkbox]{accent-color:var(--red-hi);width:15px;height:15px}
+.al-row input[type=number],.al-items select{width:84px;height:28px;padding:0 8px;border-radius:7px;background:#0E1B1F;border:1px solid var(--ink);color:#BDF4FA;font-family:inherit;font-size:13px}
+.al-items select{width:auto}
+.al-wa{margin:4px 0 0 !important;font-size:12.5px !important}
+.al-wa .linkbtn{margin-left:4px}
+.al-hint{margin:8px 0 0 !important;font-size:12px !important;color:#8C95A3 !important}
+.wa-table td.low{color:#FFB4A8;font-weight:700}
+.al-items{margin-top:12px;font-size:13px;color:#B9BFC9}
+.al-items summary{cursor:pointer;color:#9AA3B1;font-weight:600}
+.al-item{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid #262D38}
+.al-item b{min-width:64px;color:#BDF4FA;font-variant-numeric:tabular-nums}
+.al-item span{flex:1;color:#8C95A3;font-size:12px}
+.al-log{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:#B9BFC9;max-height:260px;overflow-y:auto}
+.al-log div{white-space:pre-line;padding:6px 8px;border-radius:7px;background:#191E27;border:1px solid #262D38}
+.al-log time{color:#7D8796;margin-right:6px}
+.al-tag{min-width:240px;height:28px;padding:0 8px;border-radius:7px;background:#0E1B1F;border:1px solid var(--ink);color:#BDF4FA;font-family:inherit;font-size:13px}
+.al-count{width:72px;height:26px;padding:0 6px;text-align:right;border-radius:6px;background:#0E1B1F;border:1px solid var(--ink);color:#BDF4FA;font-family:inherit;font-size:13px;font-variant-numeric:tabular-nums}

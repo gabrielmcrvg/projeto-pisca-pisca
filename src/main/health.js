@@ -5,6 +5,10 @@ const { ctx, paths, START_URL, APP_ID, alive } = require('./context');
 const { label } = require('./config');
 const icon = paths.icon;
 const { AccountMonitor } = require('./monitor');
+const recorder = require('./recorder');
+const shiny = require('./shiny');
+const gameupdate = require('./gameupdate');
+const alerts = require('./alerts');
 const accounts = require('./accounts');
 const ui = require('./main-window');
 
@@ -14,6 +18,8 @@ function watch(a, wc) {
   ctx.monitors.set(a.id, m);
   m.on('change', () => ui.state());
   m.on('alert', () => queueAlert(a));
+  m.on('frame', frame => { recorder.record(a, frame); shiny.handle(a, frame); alerts.handle(a, frame); gameupdate.handle(a, frame); });
+  wc.on('did-navigate', () => gameupdate.reset(a.id));
   m.on('reload', kind => {
     if (wc.isDestroyed()) return;
     const url = wc.getURL();

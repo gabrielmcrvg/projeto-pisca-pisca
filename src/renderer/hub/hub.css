@@ -69,9 +69,25 @@ body.dragging .drop{display:flex}
 .panel.over .drop{border-color:var(--type);color:var(--type);background:color-mix(in srgb,var(--type) 7%,var(--panel))}
 
 /* ---------- Janela destacada ---------- */
-body.detached header{display:none}
+/* ---------- Janela destacada: barra compacta no topo (40 px) ---------- */
+body.detached header{height:40px;padding:0 8px 3px 10px}
+body.detached header::after{height:3px;clip-path:polygon(0 0,96px 0,102px 1px,100% 1px,100% 3px,0 3px)}
+body.detached header::before{bottom:3px}
+body.detached .top{gap:6px}
+body.detached .logo,body.detached nav,body.detached #extensions,body.detached #alerts,body.detached .count,
+body.detached #detached-list,body.detached #feedback{display:none}
+body.detached .leds{gap:5px;margin-right:0}
+body.detached .lens{width:16px;height:16px;box-shadow:0 0 0 1.5px #E8E4D8,0 0 0 3px var(--ink),inset 0 -1px 2px rgba(0,0,0,.35)}
+body.detached .dot{width:7px;height:7px;margin-top:0;align-self:center}
+body.detached header .btn{height:27px;padding:0 9px;font-size:11.5px;gap:5px}
+body.detached header .btn .ic{width:14px;height:14px}
+body.detached header .btn.icon{width:27px;padding:0}
 body.detached .panel{border:0;border-radius:0;box-shadow:none}
 body.detached .bar{height:44px}
+/* na barra compacta sobra espaço: os nomes dos botões aparecem até 620 px de largura */
+@media(min-width:621px){body.detached header #chatgpt,body.detached header #pokedex,body.detached header #auto-reload,body.detached header #reload-all{width:auto;padding:0 9px}
+  body.detached #reload-all span,body.detached #auto-reload span,body.detached .dex-btn span{display:inline}}
+@media(max-width:620px){body.detached header .btn span{display:none}body.detached header #chatgpt,body.detached header #pokedex,body.detached header #auto-reload,body.detached header #reload-all{width:27px;padding:0}}
 
 /* ---------- Aviso de problema na conta ---------- */
 .alert-pill{display:none;flex:1;min-width:0;align-items:center;gap:6px;height:26px;padding:0 3px 0 9px;border-radius:6px;
@@ -99,4 +115,5 @@ body.detached .bar{height:44px}
 .dex-btn:hover .ic{color:#FFB3B0}
 
 @media(max-width:1300px){#feedback{display:none}}
+@media(max-width:1340px){.dex-btn span{display:none}.dex-btn{width:30px;padding:0}}
 @media(max-width:1120px){.seg .btn span,#reload-all span,#auto-reload span,.dex-btn span{display:none}.dex-btn{width:30px;padding:0}#auto-reload{width:30px;padding:0}.seg .btn{width:32px;padding:0}#reload-all{width:30px;padding:0}}
