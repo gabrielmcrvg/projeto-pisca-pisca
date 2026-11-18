@@ -79,7 +79,8 @@ Botão **Alertas** no topo. Avisa no grupo do WhatsApp e/ou como notificação d
 - **Atualização do jogo**.
 
 No grupo, o bot também responde comandos com os números das contas deste HUB: **/estoque**, **/ultra**,
-**/potes**, **/revives**, **/shinies**, **/status** (se cada conta está on ou off) e **/ajuda** (dá para desligar em Alertas → Onde avisar).
+**/potes**, **/revives**, **/shinies**, **/status** (se cada conta está on ou off), **/tutorial** (passo a passo para um amigo ligar o HUB dele ao bot)
+e **/ajuda** (dá para desligar em Alertas → Onde avisar).
 
 O HUB só lê as mensagens que o jogo já recebe (nada é enviado ao jogo). Os contadores da Pokédex do servidor
 evitam contar o mesmo shiny duas vezes, mesmo depois de recarregar. Se o WhatsApp estiver desconectado, até 20

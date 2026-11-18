@@ -64,8 +64,10 @@ async function start(number) {
   s.ev.on('messages.upsert', ({ messages, type }) => {
     if (gen !== generation || type !== 'notify') return;
     for (const m of messages || []) {
-      if (!m?.key || m.key.fromMe || m.key.remoteJid !== settings().target) continue;
+      if (!m?.key || m.key.remoteJid !== settings().target) continue;
       const text = m.message?.conversation || m.message?.extendedTextMessage?.text || '';
+      // mensagem do próprio bot (deste ou de outro HUB conectado ao mesmo número)
+      if (m.key.fromMe) { if (text) events.emit('own-message', { text: String(text) }); continue; }
       if (text) events.emit('message', { text: String(text), from: m.key.participant || null, at: Number(m.messageTimestamp) * 1000 || Date.now() });
     }
   });
@@ -168,6 +170,9 @@ function setTarget(id) {
 
 // Fila de envio: uma mensagem por vez, com intervalo mínimo entre elas.
 let queue = Promise.resolve(), lastSent = 0;
+// Número do bot (para o tutorial).
+function botNumber() { return st.me?.number || null; }
+
 // Participantes do grupo escolhido (para marcar nos alertas).
 function participants() { const t = settings().target; return st.groups.find(g => g.id === t)?.participants || []; }
 
@@ -190,4 +195,4 @@ function autoStart() { if (hasSession()) start(null); }
 
 function setFactory(f) { factory = f; }
 
-Object.assign(module.exports, { events, state, start, stop, logout, refreshGroups, setTarget, send, participants, autoStart, hasSession, setFactory });
+Object.assign(module.exports, { events, state, start, stop, logout, refreshGroups, setTarget, send, participants, botNumber, autoStart, hasSession, setFactory });
