@@ -1,0 +1,153 @@
+/* Pokédex — usa as variáveis e peças do style.css (lente, LEDs, emblemas, botões) */
+
+/* Estrutura: topo, filtros e linha de resultados têm altura própria (flex:none);
+   a grade ocupa o resto e rola (min-height:0 é o que permite a rolagem num item flex). */
+body.dex{display:flex;flex-direction:column;height:100vh;overflow:hidden;user-select:none}
+.dex-top,.filters,.listbar{flex:none}
+.results{flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden}
+
+/* ---------- topo: carcaça vermelha da Pokédex ---------- */
+.dex-top{position:relative;display:flex;align-items:center;gap:14px;height:58px;padding:0 10px 4px 20px;-webkit-app-region:drag;cursor:grab;user-select:none;
+  background:linear-gradient(180deg,#EC4743 0%,#D8312E 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(0,0,0,.25)}
+.dex-top::before{display:none}
+.dex-top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--ink);
+  clip-path:polygon(0 0,190px 0,200px 2px,100% 2px,100% 4px,0 4px)}
+.dex-top .lens{box-shadow:0 0 0 2px #F4F1E8,0 0 0 4px var(--ink),inset 0 -2px 3px rgba(0,0,0,.35);filter:none}
+.dex-top .dot{opacity:.9}
+.dex-top .dot.red{background:#7A1512}
+.dex-top h1{margin:0 auto 0 4px;font-size:19px;font-weight:800;letter-spacing:.5px;color:#FFF7F2;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.search{-webkit-app-region:no-drag;cursor:text;display:flex;align-items:center;gap:8px;width:340px;height:34px;padding:0 10px;border-radius:8px;background:#0E1B1F;border:1px solid var(--ink);
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.55);color:#6FB6BF}
+.search .ic{width:16px;height:16px;flex:none}
+.search input{flex:1;min-width:0;background:none;border:0;outline:none;color:#BDF4FA;font:inherit;font-size:13px;user-select:text}
+.search input::placeholder{color:#4F8890}
+.search:focus-within{box-shadow:inset 0 2px 4px rgba(0,0,0,.55),0 0 0 2px rgba(63,216,232,.45)}
+.search input::-webkit-search-cancel-button{filter:invert(.7) sepia(1) hue-rotate(140deg)}
+
+/* fechar (esconde a telinha; Ctrl+P ou o botão do topo abrem de novo) */
+.dex-close{-webkit-app-region:no-drag;display:grid;place-items:center;width:32px;height:32px;padding:0;border-radius:8px;cursor:pointer;
+  border:1px solid rgba(0,0,0,.35);background:rgba(0,0,0,.16);color:#FFF1EF;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);transition:background var(--fast)}
+.dex-close .ic{width:16px;height:16px}
+.dex-close:hover{background:rgba(0,0,0,.32);color:#fff}
+.dex-close:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+/* janela sem moldura: uma borda fina dá o acabamento */
+body.dex{box-shadow:inset 0 0 0 1px #0B0D11}
+
+/* ---------- filtros em grupos ---------- */
+.filters{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:8px;padding:12px 20px;
+  background:linear-gradient(180deg,#1B2029,#171B23);border-bottom:1px solid var(--ink);box-shadow:0 1px 0 rgba(244,241,232,.04)}
+.fgroup{display:contents}
+.flabel{padding-top:5px;font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#7D8796;line-height:1.2;white-space:nowrap}
+.flabel small{display:block;letter-spacing:0;text-transform:none;font-weight:400;font-size:10px;color:#5D6878;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
+
+.chip{display:inline-flex;align-items:center;gap:6px;height:27px;padding:0 9px 0 4px;border-radius:8px;border:1px solid var(--ink);
+  background:linear-gradient(180deg,#2A313D,#222834);color:#E4E0D6;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(244,241,232,.07),0 2px 0 var(--ink);transition:background var(--fast),box-shadow var(--fast),transform .06s,opacity var(--fast)}
+.chip:hover{background:linear-gradient(180deg,#343C4B,#2A313E);color:#fff}
+.chip:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(244,241,232,.05),0 1px 0 var(--ink)}
+.chip:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.chip:disabled{opacity:.32;cursor:default;transform:none}
+.chip em{font-style:normal;font-weight:500;font-size:10px;color:#8C95A3;font-variant-numeric:tabular-nums}
+.chip .emblem{width:19px;height:19px}
+.chip .emblem svg{width:13px;height:13px}
+.chip .ic{width:14px;height:14px;color:var(--muted)}
+.chip.region,.chip.toggle{padding-left:10px}
+/* tipo escolhido: preenchido com a cor do tipo */
+.chip.type.on{background:linear-gradient(180deg,color-mix(in srgb,var(--type) 90%,#fff),var(--type));color:var(--glyph);
+  border-color:color-mix(in srgb,var(--type) 45%,#000);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 2px 0 color-mix(in srgb,var(--type) 40%,#000)}
+.chip.type.on .emblem{box-shadow:0 0 0 1px rgba(255,255,255,.5)}
+.chip.type.on em{color:var(--glyph);opacity:.8}
+/* região e opções escolhidas: vermelho do tema */
+.chip.region.on,.chip.toggle.on{color:#fff;border-color:var(--red-ink);background:linear-gradient(180deg,var(--red-hi),var(--red-lo));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 2px 0 var(--red-ink)}
+.chip.region.on em,.chip.toggle.on em,.chip.toggle.on .ic{color:#FFE1DF}
+
+/* ---------- linha acima da grade ---------- */
+.listbar{display:flex;align-items:center;gap:12px;min-height:46px;padding:8px 20px;border-bottom:1px solid #1E242E}
+.total{font-size:13px;color:var(--muted);white-space:nowrap}
+.total b{font-size:18px;color:var(--text);font-variant-numeric:tabular-nums;margin-right:2px}
+.active{display:flex;flex-wrap:wrap;gap:5px;flex:1;min-width:0;align-items:center}
+.active .none{color:#6E7786;font-size:12px}
+.token{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 6px 0 8px;border-radius:12px;border:1px solid #333B4A;background:#1D232D;
+  color:#DAD6CC;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background var(--fast),border-color var(--fast)}
+.token[style]{border-color:color-mix(in srgb,var(--type) 55%,#333B4A);padding-left:3px}
+.token .emblem{width:17px;height:17px;border-radius:9px}
+.token .emblem svg{width:11px;height:11px}
+.token .ic{width:12px;height:12px;color:#7D8796}
+.token:hover{background:#262D39;border-color:#4A5366}
+.token:hover .ic{color:#fff}
+.token:focus-visible,.linkbtn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.linkbtn{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 8px;border:0;border-radius:6px;background:none;color:#9AA3B1;
+  font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.linkbtn .ic{width:14px;height:14px}
+.linkbtn:hover{color:#fff;background:#1F252F}
+.linkbtn[hidden]{display:none}
+.linkbtn.fold .ic{transition:transform .15s}
+body.folded .linkbtn.fold .ic{transform:rotate(180deg)}
+body.folded .filters{display:none}
+
+/* ---------- grade de cards ---------- */
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));grid-auto-rows:236px;gap:14px;
+  align-content:start;padding:16px 20px 28px}
+.results::-webkit-scrollbar{width:12px}
+.results::-webkit-scrollbar-thumb{background:#2A3240;border-radius:6px;border:3px solid var(--bg)}
+.results::-webkit-scrollbar-thumb:hover{background:#353F50}
+
+.mon{position:relative;display:flex;flex-direction:column;align-items:center;height:100%;min-width:0;padding:10px 10px 11px;overflow:hidden;
+  border-radius:12px;border:1px solid #29303C;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--a) 9%,var(--panel)) 0%,var(--panel) 62%);
+  box-shadow:0 2px 0 var(--ink);transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;user-select:text}
+/* faixa fina com as cores dos tipos */
+.mon::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--a) 0 50%,var(--b) 50% 100%);opacity:.9}
+.mon:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--a) 55%,#29303C);
+  box-shadow:0 2px 0 var(--ink),0 10px 18px -10px rgba(0,0,0,.8)}
+
+.mon .line{flex:none;align-self:stretch;display:flex;align-items:center;gap:5px;height:16px;font-size:10.5px}
+.mon .num{color:#7D8796;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.3px}
+.mon .reg{margin-left:auto;color:#646E7D;font-size:10px}
+/* botão de copiar o nome */
+.copy{display:grid;place-items:center;width:22px;height:22px;margin:-3px -4px -3px 2px;padding:0;border-radius:6px;border:1px solid transparent;
+  background:transparent;color:#7D8796;cursor:pointer;transition:background var(--fast),color var(--fast),border-color var(--fast)}
+.copy .ic{width:13px;height:13px}
+.copy:hover{background:#12151B;border-color:#333B4A;color:var(--text)}
+.copy:focus-visible{outline:2px solid var(--cyan);outline-offset:1px}
+.copy:active{transform:translateY(1px)}
+.copy.done{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent);background:color-mix(in srgb,var(--green) 10%,#12151B)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,8px);padding:8px 14px;border-radius:9px;background:#0E1B1F;border:1px solid var(--ink);
+  color:#BDF4FA;font-size:12.5px;font-weight:600;box-shadow:0 8px 22px -8px rgba(0,0,0,.8),inset 0 0 0 1px rgba(63,216,232,.12);
+  opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.mon .leg{display:flex;color:var(--yellow)}
+.mon .leg .ic{width:12px;height:12px;fill:currentColor;stroke-width:1.5}
+
+/* área da imagem: generosa, com o fundo suave da cor do tipo principal */
+.art{position:relative;flex:none;align-self:stretch;height:120px;margin:4px 0 6px;border-radius:10px;display:grid;place-items:center;overflow:hidden;
+  grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr); /* a linha não cresce com o tamanho original da imagem */
+  background:radial-gradient(ellipse at 50% 58%,color-mix(in srgb,var(--a) 26%,transparent) 0,color-mix(in srgb,var(--a) 8%,transparent) 48%,transparent 72%)}
+.art img{grid-area:1/1;max-width:100%;max-height:100%;object-fit:contain;opacity:0;transition:opacity .15s}
+/* sprites: escala inteira (96 → 120 px) com nitidez de pixel; arte oficial: suave */
+.art img.pixel{width:120px;height:120px;image-rendering:pixelated}
+.art img:not(.pixel){width:100%;height:100%;padding:6px;image-rendering:auto;min-height:0}
+.art.ready img{opacity:1}
+.art > .emblem{grid-area:1/1;width:30px;height:30px;opacity:.3;transition:opacity .15s}
+.art > .emblem svg{width:20px;height:20px}
+.art.ready > .emblem{opacity:0}
+.art.missing > .emblem{opacity:.85}
+
+.mon h3{flex:none;margin:0;max-width:100%;font-size:14.5px;font-weight:700;line-height:1.2;text-align:center;color:var(--text);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.ftag{flex:none;margin-top:4px;max-width:100%;padding:1px 7px;border-radius:5px;background:#12151B;border:1px solid #2A3240;
+  color:#AEB6C2;font-size:10.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* tipos sempre no rodapé do card */
+.tps{flex:none;margin-top:auto;padding-top:6px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:100%}
+.tpill{display:inline-flex;align-items:center;gap:3px;height:21px;padding:0 7px 0 2px;border-radius:6px;font-size:11px;font-weight:700;
+  background:var(--type);color:var(--glyph);border:1px solid color-mix(in srgb,var(--type) 45%,#000);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.tpill .emblem{width:17px;height:17px;border:0;box-shadow:none;background:transparent}
+.tpill .emblem svg{width:12px;height:12px}
+
+.empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:60px 0;color:#7D8796}
+.empty b{color:var(--muted);font-size:14px}
+
+@media(max-width:900px){.search{width:240px}.flabel small{display:none}}

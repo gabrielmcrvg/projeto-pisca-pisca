@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"><title>CorollaHUB • ChatGPT</title><link rel="stylesheet" href="../shared/theme.css"><link rel="stylesheet" href="chat.css"></head>
+<body class="chatbar"><svg class="sprite" aria-hidden="true"><symbol id="i-reload" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.5H15"/></symbol><symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol><symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H11l-4.5 3.5V16.5h0a2 2 0 0 1-2-2z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol></svg>
+<div class="bar-top" title="Arraste para mover">
+  <span class="lens mini" aria-hidden="true"></span>
+  <span class="chat-title"><svg class="ic"><use href="#i-chat"/></svg><b>ChatGPT</b></span>
+  <span class="spacer"></span>
+  <button class="cbtn full" data-cmd="chat-home" title="Nova conversa"><svg class="ic"><use href="#i-plus"/></svg></button>
+  <button class="cbtn full" data-cmd="chat-reload" title="Recarregar (F5)"><svg class="ic"><use href="#i-reload"/></svg></button>
+  <button class="cbtn full" data-cmd="chat-external" title="Abrir no navegador"><svg class="ic"><use href="#i-external"/></svg></button>
+  <button class="cbtn" id="fold" data-cmd="chat-collapse" title="Recolher (Ctrl+G)"><svg class="ic"><use href="#i-down"/></svg></button>
+  <button class="cbtn close" data-cmd="chat-close" title="Fechar"><svg class="ic"><use href="#i-close"/></svg></button>
+</div>
+<script src="chat.js"></script></body></html>

@@ -1,0 +1,53 @@
+{
+  "name": "corollahub",
+  "productName": "CorollaHUB",
+  "version": "1.0.0",
+  "description": "Várias contas do PokeIdle em uma janela",
+  "author": "Gabriel",
+  "main": "src/main/index.js",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "dist": "electron-builder --win nsis portable --publish never"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.corollahub.app",
+    "productName": "CorollaHUB",
+    "copyright": "CorollaHUB",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "artifactName": "CorollaHUB-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CorollaHUB",
+      "uninstallDisplayName": "CorollaHUB",
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "CorollaHUB-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "CorollaHUB-${version}-portatil.${ext}"
+    },
+    "publish": []
+  }
+}

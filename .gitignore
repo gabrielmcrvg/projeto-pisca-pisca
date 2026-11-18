@@ -1,0 +1,11 @@
+# dependências e builds
+node_modules/
+dist/
+
+# extensões de terceiros não vão para o repositório (cada um instala a sua pelo botão "Extensões")
+extensions/*
+!extensions/COMO-USAR.txt
+
+# arquivos locais
+diagnostico.txt
+*.log

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"><title>CorollaHUB • Extensões</title><link rel="stylesheet" href="../shared/theme.css"><link rel="stylesheet" href="extensions.css"></head>
+<body class="xm"><svg class="sprite" aria-hidden="true"><symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 4.5a2 2 0 1 1 4 0V6h3.5A1.5 1.5 0 0 1 19 7.5V11h-1.5a2 2 0 1 0 0 4H19v3.5a1.5 1.5 0 0 1-1.5 1.5H14v-1.5a2 2 0 1 0-4 0V20H6.5A1.5 1.5 0 0 1 5 18.5V15h1.5a2 2 0 1 0 0-4H5V7.5A1.5 1.5 0 0 1 6.5 6H10z"/></symbol><symbol id="i-browser" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 9h17M7 6.8h.01M9.5 6.8h.01"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M5 8h14l-1 11.5H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></symbol><symbol id="i-reload" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.5H15"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12.5h8L17 7"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol><symbol id="i-warning" viewBox="0 0 24 24"><path d="M12 4.5l8.5 15h-17z"/><path d="M12 10v4M12 17v.01"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 2.5 14.5 0 17M12 3.5c-2.5 2.5-2.5 14.5 0 17"/></symbol></svg>
+<header class="xm-top">
+  <div class="leds" aria-hidden="true"><span class="lens"></span><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+  <div class="xm-title"><h1><svg class="ic"><use href="#i-puzzle"/></svg>Extensões</h1><small>Instaladas uma vez, valem para <b id="acc-count">todas as</b> contas</small></div>
+</header>
+<main class="xm-body">
+  <section class="card install" aria-label="Instalar extensão">
+    <h2>Instalar extensão</h2>
+    <div class="tabs" role="tablist">
+      <button class="tab on" role="tab" data-tab="browser"><svg class="ic"><use href="#i-browser"/></svg><span>Do navegador</span></button>
+      <button class="tab" role="tab" data-tab="store"><svg class="ic"><use href="#i-store"/></svg><span>Chrome Web Store</span></button>
+      <button class="tab" role="tab" data-tab="file"><svg class="ic"><use href="#i-folder"/></svg><span>Pasta ou arquivo</span></button>
+    </div>
+    <div class="pane" data-pane="browser">
+      <p>Procura as extensões que já estão no <b>Brave</b>, <b>Chrome</b>, <b>Edge</b> ou <b>Vivaldi</b> deste PC e instala no CorollaHUB.</p>
+      <button class="btn primary" id="scan"><svg class="ic"><use href="#i-search"/></svg><span>Procurar extensões no navegador</span></button>
+      <div class="scan-list" id="scan-list"></div>
+    </div>
+    <div class="pane" data-pane="store" hidden>
+      <p>Cole o link da página da extensão na Chrome Web Store (ex.: <code>chromewebstore.google.com/detail/…</code>).</p>
+      <form class="store-row" id="store-form"><input id="store-link" placeholder="https://chromewebstore.google.com/detail/…" spellcheck="false" autocomplete="off"><button class="btn primary"><svg class="ic"><use href="#i-store"/></svg><span>Instalar</span></button></form>
+    </div>
+    <div class="pane" data-pane="file" hidden>
+      <p>Para extensões que você já tem no computador: a pasta descompactada (com <code>manifest.json</code>) ou um arquivo <code>.crx</code>/<code>.zip</code>.</p>
+      <div class="row"><button class="btn" id="pick-folder"><svg class="ic"><use href="#i-folder"/></svg><span>Escolher pasta…</span></button><button class="btn" id="pick-file"><svg class="ic"><use href="#i-file"/></svg><span>Escolher arquivo .crx/.zip…</span></button></div>
+    </div>
+  </section>
+  <section class="card installed" aria-label="Extensões instaladas">
+    <div class="installed-head"><h2>Instaladas</h2><button class="linkbtn" id="open-folder"><svg class="ic"><use href="#i-folder"/></svg><span>Abrir pasta</span></button></div>
+    <div id="installed"></div>
+  </section>
+</main>
+<footer class="xm-notice" id="notice" hidden><span id="notice-text"></span><button class="btn" id="reload-all"><svg class="ic"><use href="#i-reload"/></svg><span>Recarregar todas as contas</span></button></footer>
+<script src="extensions.js"></script></body></html>

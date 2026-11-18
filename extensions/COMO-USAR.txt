@@ -1,0 +1,2 @@
+Coloque aqui extensões para testar rodando pelo código-fonte (npm start).
+No app instalado, use o botão "Extensões". Esta pasta não vai para o GitHub.
