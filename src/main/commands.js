@@ -79,15 +79,18 @@ function tutorial() {
     'Pronto: os shinies, o estoque e o resto das suas contas passam a avisar aqui. Mande /ajuda para ver os comandos.';
 }
 
-// Respostas iguais em qualquer HUB: só um responde (cada um espera um pouco e desiste se outro já respondeu).
-const SHARED = new Set(['ajuda', 'comandos', 'help', 'tutorial']);
-const ownSent = new Map();   // começo do texto -> quando o bot mandou
-wa.events.on('own-message', ({ text }) => ownSent.set(text.slice(0, 24), Date.now()));
-function sendShared(text) {
-  const wait = 300 + Math.floor(Math.random() * 3500);
+// Com mais de um HUB no mesmo bot, cada um espera um instante e não responde se outro já mandou
+// exatamente a mesma resposta (ex.: /tutorial, ou dois HUBs abertos com as mesmas contas).
+const ownSent = new Map();   // texto -> quando o bot mandou
+wa.events.on('own-message', ({ text }) => ownSent.set(text.trim(), Date.now()));
+function sendOnce(text) {
+  // vez de cada HUB pelo número do aparelho: um responde, os outros veem a resposta e desistem
+  const wait = 300 + (wa.deviceSlot() % 6) * 1800 + Math.floor(Math.random() * 300);
   setTimeout(() => {
-    if (Date.now() - (ownSent.get(text.slice(0, 24)) || 0) < 15_000) return;   // outro HUB já respondeu
-    ownSent.set(text.slice(0, 24), Date.now());
+    const key = text.trim();
+    if (Date.now() - (ownSent.get(key) || 0) < 15_000) return;   // a mesma resposta já saiu
+    ownSent.set(key, Date.now());
+    for (const [k, at] of ownSent) if (Date.now() - at > 60_000) ownSent.delete(k);
     wa.send(text).catch(() => {});
   }, wait);
 }
@@ -110,7 +113,7 @@ wa.events.on('message', ({ text, at, from }) => {
   last.set(key, Date.now());
   const reply = run(m[2], from);
   if (!reply) return;
-  if (SHARED.has(name)) sendShared(reply); else wa.send(reply).catch(() => {});
+  sendOnce(reply);
 });
 
 Object.assign(module.exports, { COMMANDS, HELP });

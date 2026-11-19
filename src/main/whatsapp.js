@@ -170,6 +170,9 @@ function setTarget(id) {
 
 // Fila de envio: uma mensagem por vez, com intervalo mínimo entre elas.
 let queue = Promise.resolve(), lastSent = 0;
+// Número deste aparelho conectado (cada HUB ligado ao bot tem um: 5521…:3@s.whatsapp.net → 3).
+function deviceSlot() { const m = String(sock?.user?.id || st.me?.id || '').match(/:(\d+)@/); return m ? Number(m[1]) : 0; }
+
 // Número do bot (para o tutorial).
 function botNumber() { return st.me?.number || null; }
 
@@ -195,4 +198,4 @@ function autoStart() { if (hasSession()) start(null); }
 
 function setFactory(f) { factory = f; }
 
-Object.assign(module.exports, { events, state, start, stop, logout, refreshGroups, setTarget, send, participants, botNumber, autoStart, hasSession, setFactory });
+Object.assign(module.exports, { events, state, start, stop, logout, refreshGroups, setTarget, send, participants, botNumber, deviceSlot, autoStart, hasSession, setFactory });
