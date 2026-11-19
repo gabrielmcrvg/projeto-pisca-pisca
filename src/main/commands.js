@@ -22,9 +22,10 @@ function stock(kind) {
 function estoque() {
   const s = alerts.summary();
   const n = v => (v == null ? '—' : Number(v).toLocaleString('pt-BR'));
-  return '📦 Estoque (Ultra · potes · revives)\n' + s.contas.map(c => `• ${c.nome}: ` +
-    (c.ultra == null && c.potes == null && c.revives == null ? 'sem dados ainda' : `${n(c.ultra)} · ${n(c.potes)} · ${n(c.revives)}`)).join('\n') +
-    '\n(— = o jogo ainda não mandou esse número)';
+  const linhas = s.contas.map(c => `• ${c.nome}: ` +
+    (c.ultra == null && c.potes == null && c.revives == null ? 'sem dados ainda' : `${n(c.ultra)} · ${n(c.potes)} · ${n(c.revives)}`));
+  const falta = linhas.some(l => l.includes('—'));
+  return '📦 Estoque (Ultra · potes · revives)\n' + linhas.join('\n') + (falta ? '\n(— = o jogo ainda não mandou esse número)' : '');
 }
 
 function shinies() {
@@ -68,11 +69,13 @@ function tutorial() {
     '2. Em *Assets*, baixe o *CorollaHUB-Setup-….exe* (ou o *-portatil.exe*, que roda sem instalar).\n' +
     '3. Abra o arquivo. Se o Windows mostrar "O Windows protegeu o computador", clique em *Mais informações* → *Executar assim mesmo*.\n' +
     '4. Siga o instalador (dá para escolher a pasta) e abra o HUB. Entre nas suas contas do jogo, uma em cada janela.\n\n' +
-    '*Ligar ao bot*\n' +
+    '*Ligar ao bot* (é no número do BOT, não no seu WhatsApp)\n' +
+    '⚠️ Não escaneie o QR code com o seu celular: isso liga o HUB ao SEU WhatsApp e os alertas saem em seu nome. Use o código abaixo.\n' +
     '5. No HUB, clique no botão de teclado (canto superior direito) → *WhatsApp do bot…*\n' +
-    `6. Digite o número do bot: *${num}* e clique em *Gerar código*.\n` +
-    '7. Mande o código de 8 letras para o dono do bot, na hora. Ele digita no celular do bot em Aparelhos conectados → Conectar com número de telefone. O código vence em poucos minutos.\n' +
-    '8. Quando conectar, escolha este grupo e clique em *Mandar teste*.\n\n' +
+    `6. No campo do número, digite o número DO BOT: *${num}* (não o seu) e clique em *Gerar código*.\n` +
+    '7. Aparece um código de 8 letras. Mande para o dono do bot na hora: ele digita no celular do bot (Aparelhos conectados → Conectar um aparelho → Conectar com número de telefone). O código vence em poucos minutos.\n' +
+    '8. Quando conectar, a tela mostra "Conectado no número" com o número do bot. Escolha este grupo e clique em *Mandar teste*: a mensagem tem que sair como o bot.\n' +
+    '   Já conectou no seu número sem querer? Clique em *Desconectar este HUB* e refaça os passos 5 a 8.\n\n' +
     '*Ajustar os alertas*\n' +
     '9. Clique em *Alertas* (sino no topo) → *Quem marcar no grupo* e escolha o seu número nas suas contas.\n' +
     '10. Ainda em Alertas, desmarque *Avisar quando sair versão nova* (um HUB só já avisa o grupo).\n\n' +
