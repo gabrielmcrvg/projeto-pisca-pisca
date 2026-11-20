@@ -3,7 +3,7 @@
 <body class="xm"><svg class="sprite" aria-hidden="true"><symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H11l-4.5 3.5V16.5h0a2 2 0 0 1-2-2z"/></symbol></svg>
 <header class="xm-top">
   <div class="leds" aria-hidden="true"><span class="lens"></span><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-  <div class="xm-title"><h1><svg class="ic"><use href="#i-bell"/></svg>Alertas</h1><small>Shinies, estoque, pokémon bom e atualização do jogo</small></div>
+  <div class="xm-title"><h1><svg class="ic"><use href="#i-bell"/></svg>Alertas</h1><small>Shinies, drops raros e estoque das suas contas</small></div>
 </header>
 <main class="xm-body">
   <section class="card">
@@ -41,6 +41,13 @@
   <section class="card">
     <h2>Pokémon bom</h2>
     <label class="al-row"><input type="checkbox" data-group="nota"> <span>Capturou pokémon com nota</span> <small>a partir de</small> <input type="number" min="0" max="10" step="0.1" data-min="nota"> <small>/ 10</small></label>
+  </section>
+
+  <section class="card">
+    <h2>Itens dropados</h2>
+    <label class="al-row"><input type="checkbox" id="drops-on"> <span>Avisar quando cair um item selecionado</span></label>
+    <div class="wa-opts" id="drop-types"></div>
+    <p class="al-hint">Mostra a conta, o item, a quantidade e o horário. Usa os destinos e a pessoa marcada configurados acima.</p>
   </section>
 
   <section class="card">

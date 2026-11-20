@@ -12,16 +12,18 @@ const { EventEmitter } = require('node:events');
 const { app, Notification } = require('electron');
 const { ctx, paths } = require('./context');
 const { label, save } = require('./config');
+const { DROP_TYPES, readDrops } = require('./drops');
 
 const events = new EventEmitter();   // 'alert' { tipo, text, conta }, 'change'
 const ULTRA = '4';
-const QUICK = /"balls"|"items"|"pkMud"|"cura"/;
+const QUICK = /"balls"|"items"|"pkMud"|"cura"|"drops"/;
 const RECENT_CATCH = 10 * 60_000;    // pokémon com caughtAt mais antigo que isso já existia
 
 const DEFAULTS = {
   whatsapp: true, windows: true, comandos: true,
   shinyVisto: true, shinyCaptura: true, shinyFuga: true,
   atualizacao: true,
+  drops: { on: true, ids: DROP_TYPES.map(item => item.id) },
   ultra: { on: true, min: 50 },
   // grupos somados por conta; os números dos itens de cada grupo
   potes: { on: true, min: 100, ids: ['203', '204', '70070'] },
@@ -158,7 +160,17 @@ function handle(a, frame) {
   let j;
   try { j = JSON.parse(frame.data); } catch { return; }
   if (j.t === 'estado' && j.estado) { try { onEstado(a, j.estado); } catch {} }
-  else if (j.t === 'batalha') for (const e of j.ev || []) if (e?.k === 'cura' && e.itemId != null) learnPotion(a, e.itemId);
+  else if (j.t === 'batalha' && Array.isArray(j.ev)) {
+    for (const e of j.ev) {
+      if (e?.k === 'cura' && e.itemId != null) learnPotion(a, e.itemId);
+      const options = config().drops;
+      if (!options.on) continue;
+      const items = readDrops(e, options.ids);
+      if (!items.length) continue;
+      const lines = items.map(item => num(item.quantity) + ' × ' + item.name);
+      emit('drop', '📦 ' + label(a) + ' encontrou ' + lines.join(', ') + ', às ' + hora() + '!', a.id, 'Drop raro!');
+    }
+  }
 }
 
 // ---------- janela ----------
@@ -173,11 +185,20 @@ function summary() {
   // números de item vistos em alguma conta, para escolher na lista
   const vistos = {};
   for (const ct of contas) for (const [id, q] of Object.entries(ct.items)) (vistos[id] ||= []).push(`${ct.nome}: ${num(q)}`);
-  return { config: c, contas, itensVistos: vistos, historico: d.historico.slice(-12).reverse() };
+  return { config: c, contas, dropTypes: DROP_TYPES.map(({ id, name }) => ({ id, name })), itensVistos: vistos, historico: d.historico.slice(-12).reverse() };
 }
 
 function setConfig(patch) {
   const c = config();
+  if (patch.drops && typeof patch.drops === 'object') {
+    const allowed = new Set(DROP_TYPES.map(item => item.id));
+    c.drops = {
+      on: 'on' in patch.drops ? Boolean(patch.drops.on) : c.drops.on,
+      ids: Array.isArray(patch.drops.ids)
+        ? [...new Set(patch.drops.ids.map(String))].filter(id => allowed.has(id))
+        : c.drops.ids,
+    };
+  }
   for (const k of ['whatsapp', 'windows', 'comandos', 'shinyVisto', 'shinyCaptura', 'shinyFuga', 'atualizacao']) if (k in patch) c[k] = Boolean(patch[k]);
   if (patch.ultra) c.ultra = { on: Boolean(patch.ultra.on), min: Math.max(0, Math.round(Number(patch.ultra.min) || 0)) };
   if (patch.nota) c.nota = { on: Boolean(patch.nota.on), min: Math.min(10, Math.max(0, Number(patch.nota.min) || 0)) };

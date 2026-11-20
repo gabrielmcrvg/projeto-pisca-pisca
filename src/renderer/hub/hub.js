@@ -10,6 +10,7 @@ const paint = (el, type) => { const t = typeOf(type); el.style.setProperty('--ty
 
 const container = document.querySelector('#panels');
 const panels = new Map();
+const controls = new WeakMap();
 let dragId = null, total = 0, editing = null;
 
 async function send(cmd, value) {
@@ -84,6 +85,7 @@ function makePanel(id) {
       if (dragId !== null && dragId !== id) send('move', { id: dragId, to: id });
     });
   }
+  controls.set(panel, Object.fromEntries(['name', 'tag', 'url', 'zoom', 'mute', 'expand', 'emblem-slot'].map(key => [key, panel.querySelector('.' + key)])));
   container.append(panel);
   return panel;
 }
@@ -233,10 +235,15 @@ window.quadra.onState(state => {
   for (const [id, panel] of panels) if (!ids.has(id)) { retries.delete(panel); panel.remove(); panels.delete(id); }
   for (const a of state.panels) {
     const panel = panels.get(a.id) || panels.set(a.id, makePanel(a.id)).get(a.id);
+    const refs = controls.get(panel);
     const rect = a.rect;
     panel.hidden = !rect;
     if (!rect) continue;
-    Object.assign(panel.style, { left: rect.x + 'px', top: rect.y + 'px', width: rect.width + 'px', height: rect.height + 'px' });
+    const bounds = [rect.x, rect.y, rect.width, rect.height].join(':');
+    if (panel.dataset.bounds !== bounds) {
+      Object.assign(panel.style, { left: rect.x + 'px', top: rect.y + 'px', width: rect.width + 'px', height: rect.height + 'px' });
+      panel.dataset.bounds = bounds;
+    }
     panel.classList.toggle('compact', rect.width < 460);
     panel.classList.toggle('tiny', rect.width < 300);
     panel.classList.toggle('active', state.active === a.id && state.panels.length > 1);
@@ -247,22 +254,23 @@ window.quadra.onState(state => {
     if (panel.dataset.type !== a.type) {
       panel.dataset.type = a.type;
       paint(panel, a.type);
-      panel.querySelector('.emblem-slot').innerHTML = emblem(a.type);
+      refs['emblem-slot'].innerHTML = emblem(a.type);
     }
     panel.dataset.name = a.name || '';
     panel.dataset.label = a.label;
-    const name = panel.querySelector('.name');
+    const name = refs.name;
     if (name.textContent !== a.label) name.textContent = a.label;
     const tagTitle = `${a.label} • ${typeOf(a.type).name}\nDuplo clique: renomear • Clique direito: tipo e esquecer login` + (detachedId ? '' : '\nArraste para trocar de lugar, ou para fora da janela para destacar');
-    panel.querySelector('.tag').title = tagTitle;
+    refs.tag.title = tagTitle;
 
-    const input = panel.querySelector('.url');
-    if (document.activeElement !== input) input.value = a.url;
-    panel.querySelector('.zoom').textContent = Math.round(a.zoom * 100) + '%';
-    const mute = panel.querySelector('.mute');
+    const input = refs.url;
+    if (document.activeElement !== input && input.value !== a.url) input.value = a.url;
+    const zoom = Math.round(a.zoom * 100) + '%';
+    if (refs.zoom.textContent !== zoom) refs.zoom.textContent = zoom;
+    const mute = refs.mute;
     if (mute.dataset.muted !== String(a.muted)) { mute.dataset.muted = a.muted; mute.innerHTML = ic(a.muted ? 'muted' : 'sound'); }
     mute.title = `${a.muted ? 'Ativar' : 'Silenciar'} áudio (Ctrl+M na conta ativa)`;
-    const expand = panel.querySelector('.expand');
+    const expand = refs.expand;
     if (expand) {
       const focused = state.focus === a.id;
       if (expand.dataset.on !== String(focused)) { expand.dataset.on = focused; expand.innerHTML = ic(focused ? 'restore' : 'expand'); expand.classList.toggle('active', focused); }

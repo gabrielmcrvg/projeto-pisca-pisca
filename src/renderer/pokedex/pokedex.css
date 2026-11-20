@@ -151,3 +151,12 @@ body.folded .filters{display:none}
 .empty b{color:var(--muted);font-size:14px}
 
 @media(max-width:900px){.search{width:240px}.flabel small{display:none}}
+
+/* Cards e filtros têm o acabamento das outras telas da Pokédex. */
+.dex-top{background:linear-gradient(110deg,#DC3C43,#B32532 65%,#81232D)}
+.flabel,.mon .num{color:#9DB0C5}
+.mon .reg{color:#9AABBF}
+.filters{border-bottom-color:#344255}
+.mon{border-color:#3A485A;content-visibility:auto;contain-intrinsic-size:auto 236px}
+.mon .art{box-shadow:inset 0 0 0 1px #ffffff08}
+.mon:hover{box-shadow:0 3px 0 var(--ink)}

@@ -1,14 +1,14 @@
 /* CorollaHUB — tema compartilhado por todas as janelas: cores, base, indicadores, botões e emblemas */
 :root{
-  --bg:#12151B; --panel:#1C222C; --panel-2:#222935; --line:#2A3240; --ink:#0B0D11;
+  --bg:#10151D; --panel:#1B2430; --panel-2:#253140; --line:#384658; --ink:#090E15;
   --red:#E53935; --red-hi:#F0524E; --red-lo:#C62828; --red-ink:#5A1312;
-  --text:#F4F1E8; --muted:#A3ABB8; --dim:#6E7786;
+  --text:#F4F6F9; --muted:#B2BFCE; --dim:#8797AB;
   --cyan:#3FD8E8; --yellow:#F6C53D; --green:#5BD16E;
-  --radius:8px; --fast:.12s;
+  --radius:10px; --fast:.12s; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:13px/1.2 'Segoe UI Variable Text','Segoe UI',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.4 'Segoe UI Variable Text','Segoe UI',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 .ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
@@ -26,8 +26,8 @@ body{margin:0;background:var(--bg);color:var(--text);font:13px/1.2 'Segoe UI Var
 
 /* ---------- Botões com relevo ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:30px;padding:0 11px;
-  border:1px solid var(--ink);border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;font-weight:600;line-height:1;cursor:pointer;white-space:nowrap;
-  background:linear-gradient(180deg,#2C3441,#232A35);
+  border:1px solid #415064;border-radius:7px;color:var(--text);font-family:inherit;font-size:12px;font-weight:600;line-height:1;cursor:pointer;white-space:nowrap;
+  background:linear-gradient(180deg,#303D4D,#25303E);
   box-shadow:inset 0 1px 0 rgba(244,241,232,.09),0 2px 0 var(--ink);
   transition:background var(--fast),box-shadow var(--fast),transform .06s,color var(--fast)}
 .btn:hover{background:linear-gradient(180deg,#363F4E,#2B3240)}
@@ -60,3 +60,16 @@ body{margin:0;background:var(--bg);color:var(--text);font:13px/1.2 'Segoe UI Var
 .emblem{display:inline-grid;place-items:center;width:20px;height:20px;flex:none;border-radius:5px;background:var(--type);border:1px solid var(--ink);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -2px 0 rgba(0,0,0,.22)}
 .emblem svg{width:14px;height:14px;fill:var(--glyph);shape-rendering:crispEdges}
+
+/* Acabamento de aparelho: telas frias, comandos legíveis e foco de teclado. */
+button,input,select{font:inherit}
+button,input,select,a,summary{-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+input[type=checkbox]{accent-color:var(--red-hi);cursor:pointer;flex-shrink:0}
+input:disabled,select:disabled{cursor:not-allowed;opacity:.5}
+::selection{background:#235969;color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#415166;border:2px solid var(--bg);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:#586E87}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

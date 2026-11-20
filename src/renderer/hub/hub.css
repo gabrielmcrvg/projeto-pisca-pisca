@@ -1,6 +1,6 @@
 /* Janela principal (hub): cabeçalho, painéis das contas, arrastar, avisos e renomear */
 /* ---------- Cabeçalho (acabamento de aparelho) ---------- */
-header{position:relative;height:68px;padding:0 16px 5px;background:linear-gradient(180deg,#202631 0%,#191E27 100%);box-shadow:inset 0 1px 0 rgba(244,241,232,.06)}
+header{position:relative;height:68px;padding:0 16px 5px;background:linear-gradient(105deg,#A62B35 0,#80232D 280px,#202C3B 350px,#18212E 100%);box-shadow:inset 0 1px 0 rgba(244,241,232,.06)}
 /* filete vermelho com degrau, como a dobra de uma Pokédex */
 header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--red);
   clip-path:polygon(0 0,250px 0,262px 3px,100% 3px,100% 5px,0 5px)}
@@ -15,7 +15,7 @@ header::before{content:'';position:absolute;left:0;right:0;bottom:5px;height:1px
   box-shadow:0 3px 0 var(--ink),inset 0 0 0 1px rgba(244,241,232,.035);
   transition:border-color .15s,box-shadow .15s,opacity .15s}
 .panel.active{--frame:color-mix(in srgb,var(--type) 62%,var(--line));
-  box-shadow:0 3px 0 var(--ink),0 0 0 1px color-mix(in srgb,var(--type) 28%,transparent),0 0 16px -4px color-mix(in srgb,var(--type) 45%,transparent)}
+  box-shadow:0 3px 0 var(--ink),0 0 0 1px color-mix(in srgb,var(--type) 28%,transparent),0 4px 10px -7px var(--ink)}
 .bar{position:relative;height:42px;display:flex;align-items:center;gap:3px;padding:0 5px;overflow:hidden;
   background:linear-gradient(180deg,var(--panel-2),var(--panel));border-bottom:1px solid var(--ink)}
 .bar::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:var(--type);opacity:.45;transition:opacity .15s}
@@ -47,6 +47,7 @@ header::before{content:'';position:absolute;left:0;right:0;bottom:5px;height:1px
 .url{flex:1;min-width:0;width:30px;height:26px;padding:0 8px;border-radius:6px;background:var(--bg);color:var(--text);
   border:1px solid var(--ink);box-shadow:inset 0 1px 3px rgba(0,0,0,.45);font-family:inherit;font-size:11.5px;outline:none;user-select:text;transition:border-color var(--fast),box-shadow var(--fast)}
 .url::placeholder{color:var(--dim)}
+.url:not(:focus){color:var(--muted)}
 .url:hover{border-color:#262D39}
 .url:focus{border-color:var(--cyan);box-shadow:inset 0 1px 3px rgba(0,0,0,.45),0 0 0 2px rgba(63,216,232,.18)}
 .url:focus-visible{outline:none}
@@ -117,3 +118,16 @@ body.detached .bar{height:44px}
 @media(max-width:1300px){#feedback{display:none}}
 @media(max-width:1340px){.dex-btn span{display:none}.dex-btn{width:30px;padding:0}}
 @media(max-width:1120px){.seg .btn span,#reload-all span,#auto-reload span,.dex-btn span{display:none}.dex-btn{width:30px;padding:0}#auto-reload{width:30px;padding:0}.seg .btn{width:32px;padding:0}#reload-all{width:30px;padding:0}}
+
+/* A carcaça mantém as mesmas medidas usadas pelas quatro contas. */
+header .leds{padding-right:4px}
+header .lens{filter:none}
+header .seg{background:#101A27;border-color:#090E15}
+.panel{border-radius:11px}
+.panel.active .tag{color:#fff}
+.bar{background:linear-gradient(180deg,#293646,#1E2936)}
+.bar .tag{max-width:210px}
+.panel.loading .bar::before{background:var(--cyan);opacity:1}
+.zoom{color:#BDCBDA;font-weight:600}
+.dex-btn .ic{color:#FFADA8}
+body.detached header{background:linear-gradient(105deg,#902631,#202C3B 250px)}

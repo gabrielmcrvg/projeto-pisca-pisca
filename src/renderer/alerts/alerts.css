@@ -20,3 +20,33 @@
 .al-log time{color:#7D8796;margin-right:6px}
 .al-tag{min-width:240px;height:28px;padding:0 8px;border-radius:7px;background:#0E1B1F;border:1px solid var(--ink);color:#BDF4FA;font-family:inherit;font-size:13px}
 .al-count{width:72px;height:26px;padding:0 6px;text-align:right;border-radius:6px;background:#0E1B1F;border:1px solid var(--ink);color:#BDF4FA;font-family:inherit;font-size:13px;font-variant-numeric:tabular-nums}
+
+/* Opções legíveis sem efeitos gráficos contínuos. */
+.wa-opts{gap:8px;margin:10px 0 12px}
+.wa-opts label{min-height:34px;padding:6px 10px;border:1px solid #3A485A;border-radius:7px;background:#141D28;line-height:1.35}
+.wa-opts label:has(input:checked){background:#17323B;border-color:#387381;color:#E2F7FA}
+.wa-opts label:has(input:disabled){opacity:.5}
+.al-row{min-height:34px;flex-wrap:wrap;gap:8px;line-height:1.4}
+.al-row > span{min-width:0;flex:1}
+.al-row input[type=number]{width:72px;height:32px;border-color:#43576A}
+.al-tag{width:58%;min-width:0;max-width:100%;height:34px;border-color:#43576A}
+.al-count{height:30px;border-color:#43576A}
+.wa-table{margin-top:12px;border:1px solid #344255;border-collapse:separate;border-spacing:0;border-radius:8px;overflow:hidden}
+.wa-table th,.wa-table td{padding:9px 10px;border-bottom-color:#344255}
+.wa-table thead{background:#111C28}
+.wa-table thead th{color:#ABBDD1;letter-spacing:.6px}
+.wa-table tbody tr:nth-child(even){background:#17212D}
+.wa-table tbody tr:last-child td{border-bottom:0}
+.wa-table td.low{color:#FFBEAE;background:#432A2C}
+.wa-table tfoot{background:#111C28}
+.al-items{border-top:1px solid #344255;padding-top:12px}
+.al-items summary{color:#BCCDDD;line-height:1.5}
+.al-item{padding:9px 0;gap:8px;flex-wrap:wrap}
+.al-item span{overflow-wrap:anywhere;min-width:90px}
+.al-hint{line-height:1.6!important;color:#A6B5C6!important}
+.al-log{gap:8px;line-height:1.55;max-height:300px}
+.al-log div{padding:10px 12px;background:#121D28;border-color:#344255;border-left:3px solid var(--cyan)}
+.al-log time{display:block;color:#A2B7CC;font-size:11px;margin:0 0 3px;font-variant-numeric:tabular-nums}
+#drop-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#drop-types label{overflow-wrap:anywhere}
+@media(max-width:560px){.al-row > span{flex-basis:125px}.al-tag{flex:1 1 100%;width:100%}.wa-table th,.wa-table td{padding:8px 6px}.wa-table{font-size:12px}}
