@@ -3,7 +3,7 @@ header{position:relative;height:68px;padding:0 16px;background:#181b21;border-bo
 header::after{content:'';position:absolute;left:16px;bottom:0;width:30px;height:2px;background:var(--red);border-radius:2px}
 .top{display:flex;align-items:center;gap:10px;height:100%}.spacer{flex:1;min-width:0}
 .logo{height:48px;width:160px;object-fit:contain;display:block;flex:none;-webkit-user-drag:none}
-.top>.leds{gap:4px;margin-right:-4px}.top>.leds .lens{display:none}
+.top>.leds{gap:4px;margin-right:0}.top>.leds .lens{display:none}
 .panel{position:absolute;--frame:#272d36;border:2px solid var(--frame);border-radius:8px;background:var(--panel);overflow:hidden;box-shadow:none;transition:border-color var(--fast)}
 .panel.active{--frame:color-mix(in srgb,var(--type) 45%,#272d36)}
 .bar{position:relative;height:42px;display:flex;align-items:center;gap:3px;padding:0 5px;overflow:hidden;background:#1c2027;border-bottom:1px solid var(--line)}
