@@ -1,4 +1,5 @@
 // Janela "Extensões": instalar (navegador, Chrome Web Store, pasta/arquivo), listar e remover.
+const windowChrome = require('../window-chrome');
 const path = require('node:path');
 const fs = require('node:fs');
 const { app, BrowserWindow, dialog, net, shell } = require('electron');
@@ -15,7 +16,7 @@ let lastScan = new Map();   // resultado da última busca no navegador
 
 function openExtensions() {
   if (alive(extWin)) { if (extWin.isMinimized()) extWin.restore(); extWin.focus(); return; }
-  extWin = new BrowserWindow({ width: 820, height: 720, minWidth: 600, minHeight: 480, parent: ctx.win, backgroundColor: BG, icon,
+  extWin = new BrowserWindow({ ...windowChrome(), width: 820, height: 720, minWidth: 600, minHeight: 480, parent: ctx.win, backgroundColor: BG, icon,
     title: 'CorollaHUB • Extensões', autoHideMenuBar: true, webPreferences: { ...secured, preload } });
   extWin.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   extWin.webContents.on('will-navigate', event => event.preventDefault());

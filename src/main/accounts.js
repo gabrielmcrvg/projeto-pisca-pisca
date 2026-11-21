@@ -8,6 +8,7 @@ const extensions = require('./extensions/catalog');
 const health = require('./health');
 const keys = require('./shortcuts');
 const ui = require('./main-window');
+const windowChrome = require('./window-chrome');
 const dex = require('./windows/pokedex');
 
 function safeURL(value) {
@@ -160,6 +161,7 @@ function detach(id, at) {
     if (!onScreen(bounds)) bounds = null;
   }
   const dw = new BrowserWindow({
+    ...windowChrome(),
     ...(bounds || { width: 960, height: 720 }), minWidth: 420, minHeight: 300, backgroundColor: BG, icon,
     title: `CorollaHUB • ${label(a)}`, autoHideMenuBar: true, webPreferences: { ...secured, preload },
   });

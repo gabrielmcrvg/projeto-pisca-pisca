@@ -30,6 +30,7 @@ function setup() {
       if (name === 'electron') return { BrowserWindow };
       if (name === '../context') return { ctx: {}, paths: { page: () => 'alerts.html' }, secured: {}, alive: w => w && !w.dead };
       if (name === '../alerts') return alerts;
+      if (name === '../window-chrome') return require('../src/main/window-chrome');
       if (name === '../shiny') return shiny;
       if (name === '../whatsapp') return wa;
       if (name === '../gameupdate') return { enabled: () => true };

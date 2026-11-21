@@ -120,3 +120,10 @@ Trocar ou atualizar o `.exe` não apaga nada.
 ## Identidade visual
 
 A interface usa superfícies planas em grafite, acentos vermelhos e indicadores azuis inspirados na Pokédex. A marca aparece no cabeçalho, no ícone da janela, na bandeja e no instalador. Os controles e atalhos existentes continuam disponíveis.
+
+## Barra de título e ícones
+
+- O topo da janela mostra apenas **CorollaHUB**, com a fonte bold da marca.
+- A Pokébola identifica o aplicativo na bandeja, barra de tarefas, janela e instalador.
+- A barra usa o grafite do aplicativo. Arraste pela região do nome para mover a janela; os controles nativos de minimizar, maximizar/restaurar e fechar ficam à direita.
+- Os botões e campos do aplicativo continuam clicáveis. Fechar a janela principal continua enviando o app à bandeja; **Sair do CorollaHUB** encerra de verdade.

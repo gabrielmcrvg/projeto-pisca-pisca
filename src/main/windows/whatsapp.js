@@ -1,4 +1,5 @@
 // Janela "WhatsApp do bot": conectar o número do bot (QR ou código), escolher o grupo e testar.
+const windowChrome = require('../window-chrome');
 const { BrowserWindow, dialog } = require('electron');
 const { ctx, paths, BG, secured, alive } = require('../context');
 const wa = require('../whatsapp');
@@ -30,7 +31,7 @@ wa.events.on('change', () => flush());
 
 function openWhatsApp() {
   if (alive(waWin)) { if (waWin.isMinimized()) waWin.restore(); waWin.focus(); return; }
-  waWin = new BrowserWindow({ width: 560, height: 700, minWidth: 460, minHeight: 520, parent: ctx.win, backgroundColor: BG, icon: paths.icon,
+  waWin = new BrowserWindow({ ...windowChrome(), width: 560, height: 700, minWidth: 460, minHeight: 520, parent: ctx.win, backgroundColor: BG, icon: paths.icon,
     title: 'CorollaHUB • WhatsApp do bot', autoHideMenuBar: true, webPreferences: { ...secured, preload: paths.preload } });
   waWin.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   waWin.webContents.on('will-navigate', event => event.preventDefault());

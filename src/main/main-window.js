@@ -14,6 +14,7 @@ const extensions = require('./extensions/catalog');
 const health = require('./health');
 const keys = require('./shortcuts');
 const tray = require('./tray');
+const windowChrome = require('./window-chrome');
 
 // Botões do topo (Pokédex, Auto, avisos): iguais na janela principal e nas destacadas.
 // "Aberto" vale para a janela onde a telinha está agora.
@@ -67,7 +68,7 @@ async function create() {
   ctx.config = loadConfig();
   ctx.config.accounts.forEach(a => { a.url = START_URL; });
   Menu.setApplicationMenu(null);
-  ctx.win = new BrowserWindow({ width: 1480, height: 960, minWidth: 900, minHeight: 650, backgroundColor: BG, icon, title: 'CorollaHUB', webPreferences: { ...secured, preload } });
+  ctx.win = new BrowserWindow({ ...windowChrome(), width: 1480, height: 960, minWidth: 900, minHeight: 650, backgroundColor: BG, icon, title: 'CorollaHUB', webPreferences: { ...secured, preload } });
   ctx.win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   ctx.win.webContents.on('will-navigate', event => event.preventDefault());
   ctx.win.webContents.on('before-input-event', (event, input) => { if (keys.shortcut(input, null)) event.preventDefault(); });

@@ -1,4 +1,5 @@
 // Janela "Alertas": o que avisar e onde, estoque de cada conta, contadores de shiny e últimos alertas.
+const windowChrome = require('../window-chrome');
 const { BrowserWindow } = require('electron');
 const { ctx, paths, BG, secured, alive } = require('../context');
 const alerts = require('../alerts');
@@ -34,7 +35,7 @@ wa.events.on('change', push);
 
 function openAlerts() {
   if (alive(win)) { if (win.isMinimized()) win.restore(); win.focus(); return; }
-  win = new BrowserWindow({ width: 640, height: 820, minWidth: 520, minHeight: 560, parent: ctx.win, backgroundColor: BG, icon: paths.icon,
+  win = new BrowserWindow({ ...windowChrome(), width: 640, height: 820, minWidth: 520, minHeight: 560, parent: ctx.win, backgroundColor: BG, icon: paths.icon,
     title: 'CorollaHUB • Alertas', autoHideMenuBar: true, webPreferences: { ...secured, preload: paths.preload } });
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', event => event.preventDefault());

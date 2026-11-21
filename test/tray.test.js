@@ -126,6 +126,7 @@ function loadMain(s) {
       if (name === './health') return { watchNetwork() {}, ensureShortcut() {} };
       if (name === './shortcuts') return {};
       if (name === './tray') return s.tray;
+      if (name === './window-chrome') return require('../src/main/window-chrome');
       throw new Error(name);
     },
   };

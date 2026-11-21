@@ -37,3 +37,14 @@ body.detached .leds{gap:4px;margin-right:4px}body.detached header .btn{height:27
 @media(max-width:1120px){.seg .btn span,#reload-all span,#auto-reload span{display:none}.dex-btn,#auto-reload,#reload-all{width:30px;padding:0}.seg .btn{width:32px;padding:0}}
 @media(min-width:621px){body.detached header #chatgpt,body.detached header #pokedex,body.detached header #auto-reload,body.detached header #reload-all{width:auto;padding:0 8px}body.detached #reload-all span,body.detached #auto-reload span,body.detached .dex-btn span{display:inline}}
 @media(max-width:620px){body.detached header .btn span{display:none}body.detached header #chatgpt,body.detached header #pokedex,body.detached header #auto-reload,body.detached header #reload-all{width:27px;padding:0}}
+
+/* A marca é só o nome; o símbolo fica nos ícones do sistema. */
+header{padding:0 16px;height:68px}
+.windowbar{height:32px;display:flex;align-items:center;padding-right:150px;-webkit-app-region:drag;app-region:drag;user-select:none}
+.wordmark{display:block;width:145px;height:23px;object-fit:contain;object-position:left center;pointer-events:none;-webkit-user-drag:none}
+.top{height:36px;gap:10px;-webkit-app-region:no-drag;app-region:no-drag}
+.windowbar button,.windowbar input,.windowbar a{-webkit-app-region:no-drag;app-region:no-drag}
+body.detached header{height:72px;padding-top:0;padding-bottom:0}
+body.detached .windowbar{height:32px}
+body.detached .wordmark{width:115px;height:19px}
+body.detached .top{height:40px}

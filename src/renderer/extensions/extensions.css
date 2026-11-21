@@ -100,3 +100,10 @@ code{background:#12151B;border:1px solid #2A3240;border-radius:4px;padding:0 4px
 .btn.mini.upd{background:#3b3324;border-color:#6b5833;color:#f0d79a}.btn.mini.danger:hover:not(:disabled){background:#432a33;border-color:transparent;color:#ffb7bf}
 .linkbtn{font-weight:500;color:var(--muted)}.linkbtn:hover{background:#282d36}.xm-notice{background:#15181e;border-color:var(--line)}
 
+
+/* Cabeçalho como área de arraste; botões do Windows ocupam o canto direito. */
+.xm-top{-webkit-app-region:drag;app-region:drag;padding-right:150px}
+.xm-title{min-width:0}
+.xm-title h1{white-space:nowrap}
+.xm-title small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xm-top button,.xm-top input,.xm-top a,.xm-top select{-webkit-app-region:no-drag;app-region:no-drag}
