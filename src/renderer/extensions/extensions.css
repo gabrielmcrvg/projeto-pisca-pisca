@@ -82,3 +82,21 @@ code{background:#12151B;border:1px solid #2A3240;border-radius:4px;padding:0 4px
 .xrow{background:#141D28;border-color:#344255}
 .xm-body{scrollbar-gutter:stable}
 @media(max-width:560px){.xm-body{padding:14px}.card{padding:14px}.xm-top{padding-left:18px;gap:12px}}
+
+
+/* Revisão minimalista: carcaça discreta e controles planos. */
+.xm-top{height:72px;background:#181b21;box-shadow:none;border-bottom:1px solid var(--line);padding-bottom:0}
+.xm-top::after{height:2px;left:22px;right:auto;width:26px;background:var(--red);clip-path:none;border-radius:2px}
+.xm-top .lens{width:18px;height:18px;border:3px solid #233b43;background:var(--cyan);box-shadow:none;filter:none}
+.xm-top .dot{width:5px;height:5px;opacity:.45}
+.xm-title h1{font-size:18px;font-weight:600;text-shadow:none;color:var(--text)}.xm-title h1 .ic{width:18px;height:18px;color:var(--red)}.xm-title small{color:var(--muted);font-size:12px}
+.xm-body{gap:16px;padding-top:20px}
+.card{background:var(--panel);border-color:var(--line);border-radius:9px;box-shadow:none;padding:18px}
+.card h2{font-size:14px;font-weight:600;color:var(--text);letter-spacing:0;text-transform:none;margin-bottom:12px}.card h2::before{display:none}.card p{color:var(--muted)}
+.tabs{background:#12151a;border-color:var(--line);box-shadow:none;border-radius:7px}.tab{font-weight:500;border-radius:5px;color:var(--muted)}.tab.on{background:#38242c;border-color:#57303a;box-shadow:none;color:#ffb7bf}
+.btn.primary{background:var(--red);border-color:transparent;box-shadow:none;color:#fff}.btn.primary:hover{background:var(--red-hi)}
+.store-row input{background:#12151a;border-color:var(--line);box-shadow:none}.store-row input:focus{border-color:var(--cyan);box-shadow:none}
+.xrow{background:transparent;border-color:var(--line);border-radius:7px}.xicon{background:#12151a;border-color:var(--line);border-radius:6px}.xinfo b{font-weight:600}.xinfo p,.xinfo small{color:var(--muted)}
+.btn.mini.upd{background:#3b3324;border-color:#6b5833;color:#f0d79a}.btn.mini.danger:hover:not(:disabled){background:#432a33;border-color:transparent;color:#ffb7bf}
+.linkbtn{font-weight:500;color:var(--muted)}.linkbtn:hover{background:#282d36}.xm-notice{background:#15181e;border-color:var(--line)}
+

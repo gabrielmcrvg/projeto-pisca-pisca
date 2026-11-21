@@ -9,6 +9,7 @@ const extensions = require('./extensions/catalog');
 const ui = require('./main-window');
 const recorder = require('./recorder');
 const gameupdate = require('./gameupdate');
+const tray = require('./tray');
 
 // Menu do botão de ajuda no topo: atalhos, pastas do app e versão.
 const SHORTCUTS = 'Ctrl+1…4 — ampliar/restaurar a conta (ou trazer a janela destacada)\nCtrl+0 — voltar para todas\n' +
@@ -30,6 +31,9 @@ function appMenu(sender) {
     { label: 'Gravar mensagens do jogo', type: 'checkbox', checked: recorder.isRecording(),
       click: () => (recorder.isRecording() ? recorder.stop() : recorder.start()) },
     { label: 'Abrir pasta de gravações', click: () => { require('node:fs').mkdirSync(recorder.folder(), { recursive: true }); shell.openPath(recorder.folder()); } },
+    { type: 'separator' },
+    { label: 'Ocultar na bandeja (continuar rodando)', enabled: tray.available(), click: tray.hide },
+    { label: 'Sair do CorollaHUB', click: () => app.quit() },
     { type: 'separator' },
     { label: 'Sobre o CorollaHUB', click: () => dialog.showMessageBox(owner, { type: 'info', title: 'Sobre', message: `CorollaHUB ${app.getVersion()}`,
       detail: `Várias contas em uma janela.\nElectron ${process.versions.electron} • Chromium ${process.versions.chrome}\n\nDados e imagens da Pokédex: PokéAPI.`, noLink: true }) },

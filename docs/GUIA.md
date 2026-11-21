@@ -1,5 +1,16 @@
 # Guia de uso
 
+## Bandeja do Windows e segundo plano
+
+- **Minimizar**, o **X** e **Alt+F4** na janela principal ocultam o CorollaHUB na bandeja, perto do relógio.
+- As páginas das contas, o monitoramento e o WhatsApp continuam abertos. Ocultar não recarrega nem desconecta as contas.
+- Contas destacadas e janelas auxiliares abertas também ficam ocultas. Clique no ícone da bandeja ou em **Abrir CorollaHUB** para restaurá-las.
+- Se o ícone não aparecer, abra a seta **^** dos ícones ocultos do Windows. Abrir novamente o atalho do aplicativo também traz a janela de volta.
+- Para encerrar de verdade, clique com o botão direito no ícone e escolha **Sair do CorollaHUB**. Essa opção também está no menu de ajuda do app.
+- Enquanto o app estiver rodando, ele solicita ao Windows que evite a suspensão automática por inatividade; o monitor pode apagar normalmente.
+- Suspender/hibernar manualmente, desligar o computador ou perder a internet ainda interrompe o jogo. A bandeja não transforma a caçada em progresso offline.
+- Se a bandeja não puder ser criada, o app avisa e conserva o fechamento normal, para não ficar inacessível.
+
 ## Contas
 
 - Use **−** e **+** no topo para escolher quantas contas ficam abertas (1 a 4).
@@ -105,3 +116,7 @@ banir o número do bot, então não use o seu número pessoal.
 Tudo em `%APPDATA%\Quadra`: logins de cada conta, preferências (`preferences.json`), extensões (`extensions\`) a
 conexão do bot do WhatsApp (`whatsapp-sessao\`) e os contadores de shiny e estoque (`shinies.json`, `alertas.json`).
 Trocar ou atualizar o `.exe` não apaga nada.
+
+## Identidade visual
+
+A interface usa superfícies planas em grafite, acentos vermelhos e indicadores azuis inspirados na Pokédex. A marca aparece no cabeçalho, no ícone da janela, na bandeja e no instalador. Os controles e atalhos existentes continuam disponíveis.

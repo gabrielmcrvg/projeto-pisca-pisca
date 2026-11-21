@@ -160,3 +160,16 @@ body.folded .filters{display:none}
 .mon{border-color:#3A485A;content-visibility:auto;contain-intrinsic-size:auto 236px}
 .mon .art{box-shadow:inset 0 0 0 1px #ffffff08}
 .mon:hover{box-shadow:0 3px 0 var(--ink)}
+
+
+.dex-top{background:#181b21;box-shadow:none;border-bottom:1px solid var(--line);gap:12px;padding-bottom:0}.dex-top::after{left:20px;right:auto;width:26px;height:2px;background:var(--red);clip-path:none}
+.dex-top .lens{width:18px;height:18px;border:3px solid #233b43;background:var(--cyan);box-shadow:none;filter:none}.dex-top .dot{display:none}.dex-top h1{font-size:17px;letter-spacing:0;font-weight:600;text-shadow:none;color:var(--text)}
+.search{width:clamp(160px,35vw,340px);background:#12151a;border-color:var(--line);box-shadow:none}.search:focus-within{border-color:var(--cyan);box-shadow:none}.search input{color:var(--text)}.search input::placeholder{color:var(--dim)}.dex-close{background:transparent;border-color:transparent;box-shadow:none;color:var(--muted)}
+.filters{background:transparent;border-color:var(--line);box-shadow:none}.flabel{font-weight:500;letter-spacing:.5px;color:var(--muted)}
+.chip{background:#20242c;border-color:transparent;box-shadow:none;font-weight:500;border-radius:5px}.chip:hover{background:#2b313b}.chip:active{transform:none;box-shadow:none}
+.chip.type.on{background:color-mix(in srgb,var(--type) 16%,#20242c);border-color:color-mix(in srgb,var(--type) 40%,var(--line));color:var(--text);box-shadow:none}.chip.type.on .emblem{box-shadow:none}.chip.type.on em{color:var(--muted)}
+.chip.region.on,.chip.toggle.on{background:#38242c;border-color:#57303a;box-shadow:none;color:#ffb7bf}
+.mon{background:var(--panel);border-color:var(--line);border-radius:8px;box-shadow:none}.mon::before{height:2px;opacity:.65}.mon:hover{transform:none;box-shadow:none;border-color:color-mix(in srgb,var(--a) 45%,var(--line))}
+.mon .art{box-shadow:none}.mon .num,.mon .reg{color:var(--muted)}.mon h3{font-size:14px;font-weight:600}.tpill{border:0;box-shadow:none;font-weight:500;border-radius:4px}.ftag{background:transparent;border:0;color:var(--muted)}.token{border-radius:5px;background:#20242c;font-weight:500}
+@media(max-width:900px){.search{width:clamp(160px,32vw,240px)}}
+

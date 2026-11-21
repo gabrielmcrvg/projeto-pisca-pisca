@@ -13,6 +13,7 @@ const wa = require('./whatsapp');
 const extensions = require('./extensions/catalog');
 const health = require('./health');
 const keys = require('./shortcuts');
+const tray = require('./tray');
 
 // Botões do topo (Pokédex, Auto, avisos): iguais na janela principal e nas destacadas.
 // "Aberto" vale para a janela onde a telinha está agora.
@@ -74,8 +75,12 @@ async function create() {
   ctx.win.on('focus', () => ctx.win.flashFrame(false));
   for (const a of ctx.config.accounts) ctx.win.contentView.addChildView(accounts.createView(a));
   ctx.win.on('resize', arrange);
-  // Fechar a janela principal encerra tudo; as janelas destacadas reabrem no mesmo lugar.
-  ctx.win.on('close', () => {
+  tray.install();
+  ctx.win.on('minimize', () => tray.hide());
+  ctx.win.on('session-end', () => { ctx.quitting = true; });
+  // X e Alt+F4 ocultam na bandeja. O menu Sair executa a limpeza normal.
+  ctx.win.on('close', event => {
+    if (!ctx.quitting && tray.hide()) { event.preventDefault(); return; }
     ctx.quitting = true;
     // fechar as janelinhas antes da principal evita travar ao sair
     dex.close();

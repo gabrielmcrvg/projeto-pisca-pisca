@@ -1,7 +1,7 @@
 {
   "name": "corollahub",
   "productName": "CorollaHUB",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Várias contas do PokeIdle em uma janela",
   "author": "Gabriel",
   "main": "src/main/index.js",

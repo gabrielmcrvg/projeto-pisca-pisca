@@ -1,7 +1,7 @@
 // Ponto de entrada do CorollaHUB (processo principal do Electron).
 const path = require('node:path');
 const { app, dialog } = require('electron');
-const { ctx, APP_ID, alive } = require('./context');
+const { ctx, APP_ID } = require('./context');
 
 if (process.env.QUADRA_DATA) app.setPath('userData', path.resolve(process.env.QUADRA_DATA));
 app.setName('Quadra'); // mantém a pasta %APPDATA%\Quadra, onde ficam os logins
@@ -15,11 +15,15 @@ if (!process.env.ELECTRON_ENABLE_LOGGING) app.commandLine.appendSwitch('log-leve
 app.on('web-contents-created', (_e, wc) => wc.setWebRTCIPHandlingPolicy('default_public_interface_only'));
 
 const mainWindow = require('./main-window');
+const tray = require('./tray');
+// Sair precisa permitir que o close da janela encerre contas e o WhatsApp.
+app.on('before-quit', () => { ctx.quitting = true; });
+app.on('will-quit', tray.dispose);
 require('./ipc');   // registra os comandos vindos das páginas
 
 if (!app.requestSingleInstanceLock()) app.quit();
 else {
-  app.on('second-instance', () => { const { win } = ctx; if (alive(win)) { if (win.isMinimized()) win.restore(); win.focus(); } });
+  app.on('second-instance', () => tray.restore());
   app.whenReady().then(mainWindow.create).catch(e => { dialog.showErrorBox('CorollaHUB', e.message); app.quit(); });
   app.on('window-all-closed', () => app.quit());
 }

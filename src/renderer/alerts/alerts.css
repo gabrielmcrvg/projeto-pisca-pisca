@@ -50,3 +50,11 @@
 #drop-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 #drop-types label{overflow-wrap:anywhere}
 @media(max-width:560px){.al-row > span{flex-basis:125px}.al-tag{flex:1 1 100%;width:100%}.wa-table th,.wa-table td{padding:8px 6px}.wa-table{font-size:12px}}
+
+
+.wa-opts label,.wa-opts label:has(input:checked){min-height:30px;padding:3px 0;border:0;border-radius:0;background:transparent;color:var(--text)}.wa-opts{gap:6px 20px}
+.al-row{color:var(--text);min-height:34px}.al-row input[type=number],.al-tag,.al-count{background:#12151a;border-color:#353d49;color:var(--text);border-radius:5px}.al-hint{color:var(--muted)!important}
+.wa-table{border:0;border-radius:0;background:transparent}.wa-table thead,.wa-table tfoot{background:transparent}.wa-table thead th{font-size:11px;font-weight:500;letter-spacing:.3px}
+.wa-table tbody tr:nth-child(even){background:transparent}.wa-table tbody tr:hover{background:#1e232b}.wa-table th,.wa-table td{padding-top:10px;padding-bottom:10px;border-bottom-color:var(--line)}.wa-table td.low{background:transparent;color:#f3a6af}
+.al-items{border-top-color:var(--line)}.al-items summary,.al-log time{color:var(--muted)}.al-log div{background:transparent;border:0;border-left:2px solid #3e4857;border-radius:0;padding:8px 12px}#drop-types{gap:4px 18px}
+
