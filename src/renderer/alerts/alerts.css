@@ -58,3 +58,11 @@
 .wa-table tbody tr:nth-child(even){background:transparent}.wa-table tbody tr:hover{background:#1e232b}.wa-table th,.wa-table td{padding-top:10px;padding-bottom:10px;border-bottom-color:var(--line)}.wa-table td.low{background:transparent;color:#f3a6af}
 .al-items{border-top-color:var(--line)}.al-items summary,.al-log time{color:var(--muted)}.al-log div{background:transparent;border:0;border-left:2px solid #3e4857;border-radius:0;padding:8px 12px}#drop-types{gap:4px 18px}
 
+
+/* A tabela permanece legível nas janelas menores, com rolagem só quando necessária. */
+.al-rare-table{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.al-rare-table .wa-table{min-width:540px}
+.al-rare-table th,.al-rare-table td{padding-left:7px;padding-right:7px}
+.al-rare-table th:not(:first-child),.al-rare-table td:not(:first-child){white-space:nowrap}
+.al-rare-table th:first-child,.al-rare-table td:first-child{min-width:140px}
+.al-rare-table tfoot th{border-top:1px solid var(--line);font-weight:600}

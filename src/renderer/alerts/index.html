@@ -39,6 +39,19 @@
   </section>
 
   <section class="card">
+    <h2>Estoque de itens raros</h2>
+    <p class="al-hint">Últimas quantidades recebidas da mochila. Chave, Shiny Stone e Bicicleta são fragmentos; — indica que a leitura ainda está pendente.</p>
+    <div class="al-rare-table" role="region" aria-label="Quantidades de itens raros por conta" tabindex="0">
+      <table class="wa-table" aria-label="Estoque de itens raros">
+        <thead><tr id="rare-head"></tr></thead>
+        <tbody id="rare-stock"></tbody>
+        <tfoot><tr id="rare-total"></tr></tfoot>
+      </table>
+    </div>
+    <p class="al-hint" id="rare-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
     <h2>Pokémon bom</h2>
     <label class="al-row"><input type="checkbox" data-group="nota"> <span>Capturou pokémon com nota</span> <small>a partir de</small> <input type="number" min="0" max="10" step="0.1" data-min="nota"> <small>/ 10</small></label>
   </section>

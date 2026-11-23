@@ -73,6 +73,44 @@ window.quadra.onState(s => {
     return tr;
   })));
 
+  // Estoque atual informado pelo jogo, independente dos avisos de novos drops.
+  const rareNames = { '70000': 'Boss Token', '70011': 'Chave', '70012': 'Shiny', '70013': 'Bicicleta', '70018': 'Osso' };
+  const rareTypes = s.dropTypes || [];
+  const rareRows = s.contas.map(c => ({ id: c.id, name: c.nome, values: rareTypes.map(item => {
+    const value = c.items?.[item.id] ?? 0;
+    return c.itemsKnown && Number.isSafeInteger(value) && value >= 0 ? value : null;
+  }) }));
+  renderSection('rare-head', rareTypes, () => {
+    const headings = ['Conta', ...rareTypes.map(item => rareNames[item.id] || item.name)].map((label, i) => {
+      const th = document.createElement('th'); th.scope = 'col'; th.textContent = label;
+      if (i) th.title = rareTypes[i - 1].name;
+      return th;
+    });
+    $('#rare-head').replaceChildren(...headings);
+  });
+  renderSection('rare-stock', rareRows, () => {
+    $('#rare-stock').replaceChildren(...rareRows.map(c => {
+      const tr = document.createElement('tr'); tr.dataset.accountId = c.id;
+      const name = cell(c.name); name.title = c.name;
+      tr.append(name, ...c.values.map(value => cell(value == null ? '—' : fmt(value))));
+      return tr;
+    }));
+    const complete = rareRows.length > 0 && rareRows.every(c => c.values.every(value => value != null));
+    const hasReadings = rareRows.some(c => c.values.some(value => value != null));
+    const totalLabel = document.createElement('th'); totalLabel.scope = 'row';
+    totalLabel.textContent = !complete && hasReadings ? 'Total parcial' : 'Total';
+    const totals = rareTypes.map((_, i) => {
+      const values = rareRows.map(c => c.values[i]).filter(value => value != null);
+      const th = document.createElement('th');
+      th.textContent = values.length ? fmt(values.reduce((sum, value) => sum + value, 0)) : '—';
+      return th;
+    });
+    $('#rare-total').replaceChildren(totalLabel, ...totals);
+    $('#rare-status').textContent = complete ? 'Total das ' + rareRows.length + ' contas acima.'
+      : hasReadings ? 'Total parcial: aguardando a leitura das outras contas.'
+      : 'Aguardando o jogo enviar a mochila das contas.';
+  });
+
   const ids = Object.keys(s.itensVistos).sort((a, b) => a - b);
   for (const [id, refs] of itemRows) if (!ids.includes(id)) { refs.row.remove(); itemRows.delete(id); }
   const rows = ids.map(id => {

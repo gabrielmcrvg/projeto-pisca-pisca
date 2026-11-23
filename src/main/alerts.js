@@ -122,8 +122,8 @@ function onEstado(a, e) {
     est.balls = { ...e.balls }; touched = true;
     if (c.ultra.on && typeof e.balls[ULTRA] === 'number') checkLow(a, `${a.id}:ultra`, 'Ultra Balls', e.balls[ULTRA], Number(c.ultra.min) || 0);
   }
-  if (e.items && typeof e.items === 'object') {
-    est.items = { ...e.items }; touched = true;
+  if (e.items && typeof e.items === 'object' && !Array.isArray(e.items)) {
+    est.items = { ...e.items }; est.itemsEm = Date.now(); touched = true;
     checkGroups(a, e.items);
   }
   if (touched) { est.em = Date.now(); persist(); events.emit('change'); }
@@ -180,6 +180,8 @@ function summary() {
     const est = d.estoque[a.id] || { balls: {}, items: {} };
     const has = Object.keys(est.items || {}).length > 0;
     return { id: a.id, nome: label(a), ultra: est.balls?.[ULTRA] ?? null, items: est.items || {}, em: est.em || null,
+      // Uma mochila vazia já recebida vale zero; antes da primeira leitura é desconhecida.
+      itemsKnown: Boolean(est.itemsEm) || Object.keys(est.items || {}).length > 0,
       potes: has ? groupTotal(est.items, c.potes.ids) : null, revives: has && c.revives.ids.length ? groupTotal(est.items, c.revives.ids) : null };
   });
   // números de item vistos em alguma conta, para escolher na lista
